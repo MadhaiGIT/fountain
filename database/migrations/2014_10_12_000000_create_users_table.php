@@ -15,12 +15,21 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nick_name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('nickname')->index();
+            $table->string('email')->unique()->index();
+            $table->string('facebook_token')->index();
+            $table->string('google_token')->index();
+            $table->string('hashed_password')->index();
+            $table->boolean('account_enabled')->index();
+
+            $table->string('signup_url');
+            $table->string('signup_referer_url');
+            $table->string('signup_device');
+            $table->string('signup_ip');
+
+            $table->integer('credit')->default(0);
+            $table->timestamp('account_creation');
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
         });
     }
 
