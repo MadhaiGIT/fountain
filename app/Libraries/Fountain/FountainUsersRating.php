@@ -4,6 +4,7 @@
 namespace App\Libraries\Fountain;
 
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class FountainUsersRating extends FountainBase
 {
@@ -27,6 +28,32 @@ class FountainUsersRating extends FountainBase
         $this->ratingId = $id;
     }
 
+    public static function __UnitTest()
+    {
+        $userId = 21;
+        $queryId = 31;
+        $ratingDatetime = new DateTime('now');
+        $ratingValue = 5;
+        $ratingComment = "Test Comment";
+
+        $object = FountainUsersRating::create($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment);
+
+        $id = $object->getId();
+        $objectFromId = new FountainUsersRating($id);
+
+        FountainBase::UnitTestCompare("Creating", $id, $objectFromId->getId());
+        FountainBase::UnitTestCompare("Exists After Create", true, FountainUsersRating::exists($id));
+        FountainBase::UnitTestCompare("Finance Datetime", $ratingDatetime->getTimestamp(), $object->getRatingDatetime()->getTimestamp());
+        FountainBase::UnitTestCompare("Rating Value", $ratingValue, $object->getRatingValue());
+        FountainBase::UnitTestCompare("Rating Comment", $ratingComment, $object->getRatingComment());
+
+        $object->delete();
+        FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersRating::exists($id));
+
+        return true;
+    }
+
+
     /**
      * @return int
      */
@@ -41,7 +68,22 @@ class FountainUsersRating extends FountainBase
     public function getRatingComment()
     {
         $result = FountainUsersRating::__DB__select($this->ratingId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['rating_comment'];
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getRatingDatetime()
+    {
+        try {
+            $result = FountainUsersRating::__DB__select($this->ratingId);
+            $result = Utils::StdClassToArray($result);
+            return new DateTime($result['rating_value']);
+        } catch (\Exception $exception) {
+            return new DateTime('now');
+        }
     }
 
     /**
@@ -50,6 +92,7 @@ class FountainUsersRating extends FountainBase
     public function getRatingValue()
     {
         $result = FountainUsersRating::__DB__select($this->ratingId);
+        $result = Utils::StdClassToArray($result);
         return (int)$result['rating_value'];
     }
 
@@ -98,7 +141,7 @@ class FountainUsersRating extends FountainBase
     {
         $result = DB::selectOne(
             "
-            SELECT `rating_id`, `user_id`, `qeury_id`, `rating_datetime`, `rating_value`, `rating_comment`
+            SELECT `rating_id`, `user_id`, `query_id`, `rating_datetime`, `rating_value`, `rating_comment`
             FROM `users_rating`
             WHERE `rating_id` = ?
             ",
@@ -115,7 +158,7 @@ class FountainUsersRating extends FountainBase
     public static function exists($ratingId)
     {
         $result = FountainUsersRating::__DB__select($ratingId);
-        if (($result === false) || (!is_array($result))) {
+        if (($result === false) || (!is_object($result))) {
             return false;
         } else {
             return true;
@@ -127,7 +170,7 @@ class FountainUsersRating extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE FROM users_rating");
+        DB::delete("DELETE FROM users_rating WHERE rating_id = ?", [$this->getId()]);
     }
 
 }

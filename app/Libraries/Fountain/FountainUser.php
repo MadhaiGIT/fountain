@@ -30,6 +30,55 @@ class FountainUser extends FountainBase
      */
     public static function __UnitTest()
     {
+        $nickname1 = "Johe Doe";
+        $nickname2 = "Jane Doe";
+
+        $email1 = "email1@gmail.com";
+        $email2 = "email2@gmail.com";
+
+        $facebookToken1 = "fb-token-1";
+        $facebookToken2 = "fb-token-2";
+
+        $googleToken1 = "gg-token-1";
+        $googleToken2 = "gg-token-2";
+
+        $user1 = FountainUser::create($nickname1, $email1, $facebookToken1, $googleToken1);
+        $user2 = FountainUser::create($nickname2, $email2, $facebookToken2, $googleToken2);
+
+        $id1 = $user1->getUserId();
+        $objectFromId1 = new FountainUser($id1);
+        if (!FountainBase::UnitTestCompare("create user id 1", $id1, $objectFromId1->getUserId())) {
+            return false;
+        }
+
+        // check exists after create
+        if (!FountainBase::UnitTestCompare("exist after create", FountainUser::exists($id1), true)) {
+            return false;
+        }
+
+        if (!FountainBase::UnitTestCompare("compare nick name", $nickname1, $user1->getNickName())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("compare email", $email1, $user1->getEmail())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("compare facebook token 1", $facebookToken1, $user1->getFacebookToken())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("compare google token 1", $googleToken1, $user1->getGoogleToken())) {
+            return false;
+        }
+
+        $user1->delete();
+        if (!FountainBase::UnitTestCompare("exists after delete", false, FountainUser::exists($user1->getUserId()))) {
+            return false;
+        }
+        $user2->delete();
+        if (!FountainBase::UnitTestCompare("exists after delete", false, FountainUser::exists($user2->getUserId()))) {
+            return false;
+        }
+
+
         return true;
     }
 
@@ -58,7 +107,30 @@ class FountainUser extends FountainBase
     public function getNickName()
     {
         $result = FountainUser::__DB__select__user($this->userId);
-        return (string)$result["nick_name"];
+        $result = Utils::StdClassToArray($result);
+        return (string)$result["nickname"];
+    }
+
+    /**
+     * Get Facebook Token
+     * @return string
+     */
+    public function getFacebookToken()
+    {
+        $result = FountainUser::__DB__select__user($this->userId);
+        $result = Utils::StdClassToArray($result);
+        return (string)$result["facebook_token"];
+    }
+
+    /**
+     * Get Google Token
+     * @return string
+     */
+    public function getGoogleToken()
+    {
+        $result = FountainUser::__DB__select__user($this->userId);
+        $result = Utils::StdClassToArray($result);
+        return (string)$result["google_token"];
     }
 
     /**
@@ -68,6 +140,7 @@ class FountainUser extends FountainBase
     public function getEmail()
     {
         $result = FountainUser::__DB__select__user($this->userId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result["email"];
     }
 
@@ -78,6 +151,7 @@ class FountainUser extends FountainBase
     public function getCredit()
     {
         $result = FountainUser::__DB__select__user($this->userId);
+        $result = Utils::StdClassToArray($result);
         return (int)$result["credit"];
     }
 
@@ -119,44 +193,29 @@ class FountainUser extends FountainBase
      * @param bool $accountEnabled
      * @param int $credit
      * @param string $hashedPassword
+     * @param string $signUpUrl
+     * @param string $signUpRefererUrl
+     * @param string $signUpDevice
+     * @param string $signUpIp
      * @return int
      */
     private static function __DB__insert__user(
-        $nickname, $email, $facebookToken, $googleToken, $accountEnabled, $credit, $hashedPassword)
+        $nickname, $email, $facebookToken, $googleToken, $accountEnabled, $credit, $hashedPassword,
+        $signUpUrl = '', $signUpRefererUrl = '', $signUpDevice = '', $signUpIp = '')
     {
         $id = DB::table('users')->insertGetId(array(
-            'nick_name' => $nickname,
+            'nickname' => $nickname,
             'email' => $email,
             'facebook_token' => $facebookToken,
             'google_token' => $googleToken,
             'account_enabled' => $accountEnabled,
             'credit' => $credit,
-            'hashed_password' => $hashedPassword
+            'hashed_password' => $hashedPassword,
+            'signup_url' => $signUpUrl,
+            'signup_referer_url' => $signUpRefererUrl,
+            'signup_device' => $signUpDevice,
+            'signup_ip' => $signUpIp,
         ));
-        /*DB::insert(
-            "INSERT INTO users
-            (
-            nick_name,
-            email,
-            facebook_token,
-            google_token,
-            account_enabled,
-            credit,
-            hashed_password
-            )
-            VALUES
-            (?, ?, ?, ?, ?, ?, ?)"
-            ,
-            [
-                $nickname,
-                $email,
-                $facebookToken,
-                $googleToken,
-                $accountEnabled,
-                $credit,
-                $hashedPassword,
-            ]
-        );*/
         return (int)$id;
     }
 
@@ -168,7 +227,7 @@ class FountainUser extends FountainBase
     private static function __DB__select__user($userId)
     {
         $result = DB::selectOne("
-            SELECT `user_id`, `nick_name`, `email`, `facebook_token`, `google_token`, `account_enabled`, `credit`, `hashed_password`
+            SELECT `user_id`, `nickname`, `email`, `facebook_token`, `google_token`, `account_enabled`, `credit`, `hashed_password`
             FROM users
             WHERE user_id = ?
             ",
@@ -187,7 +246,7 @@ class FountainUser extends FountainBase
     public static function exists($userId)
     {
         $result = FountainUser::__DB__select__user($userId);
-        if (($result === false) || (!is_array($result))) {
+        if (!is_object($result)) {
             return false;
         } else {
             return true;
@@ -199,6 +258,6 @@ class FountainUser extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE FROM users");
+        DB::delete("DELETE FROM users WHERE user_id = ?", [$this->userId]);
     }
 }

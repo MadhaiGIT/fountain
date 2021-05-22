@@ -21,6 +21,30 @@ class FountainAdviceQuery extends FountainBase
         $this->queryId = $id;
     }
 
+    public static function __UnitTest()
+    {
+        $userId = 21;
+        $adviceSecret = "Test Secret";
+        $adviceUserQuery = "Test Query";
+        $adviceResponse = "Test Response";
+
+        $object = FountainAdviceQuery::create($userId, $adviceSecret, $adviceUserQuery, $adviceResponse);
+
+        $id = $object->getId();
+        $objectFromId = new FountainAdviceQuery($id);
+
+        FountainBase::UnitTestCompare("Creating", $id, $objectFromId->getId());
+        FountainBase::UnitTestCompare("Exists After Create", true, FountainAdviceQuery::exists($id));
+        FountainBase::UnitTestCompare("Advice Secret", $adviceSecret, $object->getAdviceSecret());
+        FountainBase::UnitTestCompare("Advice UserQuery", $adviceUserQuery, $object->getAdviceUserQuery());
+        FountainBase::UnitTestCompare("Advice Response", $adviceResponse, $object->getAdviceResponse());
+
+        $object->delete();
+        FountainBase::UnitTestCompare("Exists After Delete", false, FountainAdviceQuery::exists($id));
+
+        return true;
+    }
+
     /**
      * @return int
      */
@@ -35,7 +59,18 @@ class FountainAdviceQuery extends FountainBase
     public function getAdviceSecret()
     {
         $result = FountainAdviceQuery::__DB__select($this->queryId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['advice_secret'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdviceUserQuery()
+    {
+        $result = FountainAdviceQuery::__DB__select($this->queryId);
+        $result = Utils::StdClassToArray($result);
+        return (string)$result['advice_user_query'];
     }
 
     /**
@@ -44,6 +79,7 @@ class FountainAdviceQuery extends FountainBase
     public function getAdviceResponse()
     {
         $result = FountainAdviceQuery::__DB__select($this->queryId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['advice_response'];
     }
 
@@ -69,7 +105,7 @@ class FountainAdviceQuery extends FountainBase
      */
     private static function __DB__insert($userId, $adviceSecret, $adviceUserQuery, $adviceResponse)
     {
-        $id = DB::table('advice_query')->insertGetId(
+        $id = DB::table('advice_queries')->insertGetId(
             array(
                 "user_id" => $userId,
                 "advice_secret" => $adviceSecret,
@@ -89,8 +125,8 @@ class FountainAdviceQuery extends FountainBase
     {
         $result = DB::selectOne(
             "
-            SELECT `query_id`, `user_id`, `advice_secret`, `advice_user_query`, `advice_response`, `rating_comment`
-            FROM `advice_qeury`
+            SELECT `query_id`, `user_id`, `advice_secret`, `advice_user_query`, `advice_response`
+            FROM `advice_queries`
             WHERE `query_id` = ?
             ",
             [$id]
@@ -106,7 +142,7 @@ class FountainAdviceQuery extends FountainBase
     public static function exists($queryId)
     {
         $result = FountainAdviceQuery::__DB__select($queryId, false);
-        if (($result === false) || (!is_array($result))) {
+        if (($result === false) || (!is_object($result))) {
             return false;
         } else {
             return true;
@@ -118,7 +154,7 @@ class FountainAdviceQuery extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE FROM advice_query");
+        DB::delete("DELETE FROM advice_queries WHERE query_id = ?", [$this->queryId]);
     }
 
 }

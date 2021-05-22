@@ -4,6 +4,7 @@
 namespace App\Libraries\Fountain;
 
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class FountainUsersFinance extends FountainBase
 {
@@ -21,6 +22,29 @@ class FountainUsersFinance extends FountainBase
         $this->financeId = $id;
     }
 
+    public static function __UnitTest()
+    {
+        $userId = 21;
+        $financeDatetime = new DateTime('now');
+        $financeAmount = 100.0;
+        $currency = "USD";
+
+        $object = FountainUsersFinance::create($userId, $financeDatetime, $financeAmount, $currency);
+
+        $id = $object->getId();
+        $objectFromId = new FountainUsersFinance($id);
+
+        FountainBase::UnitTestCompare("Creating", $id, $objectFromId->getId());
+        FountainBase::UnitTestCompare("Exists After Create", true, FountainUsersFinance::exists($id));
+        FountainBase::UnitTestCompare("Finance Datetime", $financeDatetime->getTimestamp(), $object->getFinanceDatetime()->getTimestamp());
+        FountainBase::UnitTestCompare("Finance Amount", $financeAmount, $object->getFinanceAmount());
+
+        $object->delete();
+        FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersActivity::exists($id));
+
+        return true;
+    }
+
     /**
      * @return int
      */
@@ -35,6 +59,7 @@ class FountainUsersFinance extends FountainBase
     public function getFinanceAmount()
     {
         $result = FountainUsersFinance::__DB__select($this->financeId);
+        $result = Utils::StdClassToArray($result);
         return (double)$result['finance_amount'];
     }
 
@@ -44,7 +69,22 @@ class FountainUsersFinance extends FountainBase
     public function getCurrency()
     {
         $result = FountainUsersFinance::__DB__select($this->financeId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['currency'];
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getFinanceDatetime()
+    {
+        try {
+            $result = FountainUsersFinance::__DB__select($this->financeId);
+            $result = Utils::StdClassToArray($result);
+            return new DateTime($result['finance_amount']);
+        } catch (\Exception $exception) {
+            return new DateTime('now');
+        }
     }
 
     /**
@@ -106,7 +146,7 @@ class FountainUsersFinance extends FountainBase
     public static function exists($financeId)
     {
         $result = FountainUsersFinance::__DB__select($financeId);
-        if (($result === false) || (!is_array($result))) {
+        if (($result === false) || (!is_object($result))) {
             return false;
         } else {
             return true;
@@ -118,7 +158,7 @@ class FountainUsersFinance extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE FROM users_finance");
+        DB::delete("DELETE FROM users_finance WHERE finance_id = ?", [$this->financeId]);
     }
 
 }

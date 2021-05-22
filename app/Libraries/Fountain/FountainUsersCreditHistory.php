@@ -4,6 +4,13 @@
 namespace App\Libraries\Fountain;
 
 use Illuminate\Support\Facades\DB;
+use DateTime;
+
+abstract class ACTION_TYPES
+{
+    const DEPOSITED = 'deposited';
+    const SPENT = 'spent';
+}
 
 class FountainUsersCreditHistory extends FountainBase
 {
@@ -16,10 +23,38 @@ class FountainUsersCreditHistory extends FountainBase
     const CLASS_NAME = __CLASS__;
     const PARENT_CLASS = NULL;
 
-    const ACTION_TYPES = array(
-        'DEPOSITED' => 'deposited',
-        'SPENT' => 'spent'
-    );
+    public static function __UnitTest()
+    {
+        $userId = 21;
+        $actionDateTime = new DateTime('now');
+        $actionType = ACTION_TYPES::DEPOSITED;
+        $actionValue = 100;
+
+        $usersCreditHistory = FountainUsersCreditHistory::create($userId, $actionDateTime, $actionType, $actionValue);
+
+        $id = $usersCreditHistory->getId();
+        $objectFromId = new FountainUsersCreditHistory($id);
+
+        if (!FountainBase::UnitTestCompare("Creating", $id, $objectFromId->getId())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Exists After Create", true, FountainUsersCreditHistory::exists($id))) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Action Datetime", $actionDateTime->getTimestamp(), $usersCreditHistory->getActionDatetime()->getTimestamp())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Action Type", $actionType, $usersCreditHistory->getActionType())) {
+            return false;
+        }
+
+        $usersCreditHistory->delete();
+        if (!FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersCreditHistory::exists($id))) {
+            return false;
+        }
+
+        return true;
+    }
 
     public function __construct($id)
     {
@@ -40,7 +75,23 @@ class FountainUsersCreditHistory extends FountainBase
     public function getActionType()
     {
         $result = FountainUsersCreditHistory::__DB__select($this->creditId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['action_type'];
+    }
+
+    /**
+     * @return DateTime
+     * @throws \Exception
+     */
+    public function getActionDatetime()
+    {
+        try {
+            $result = FountainUsersCreditHistory::__DB__select($this->creditId);
+            $result = Utils::StdClassToArray($result);
+            return new DateTime($result['action_type']);
+        } catch (\Exception $exception) {
+            return new DateTime();
+        }
     }
 
     /**
@@ -49,6 +100,7 @@ class FountainUsersCreditHistory extends FountainBase
     public function getActionValue()
     {
         $result = FountainUsersCreditHistory::__DB__select($this->creditId);
+        $result = Utils::StdClassToArray($result);
         return (int)$result['action_value'];
     }
 
@@ -111,7 +163,7 @@ class FountainUsersCreditHistory extends FountainBase
     public static function exists($creditId)
     {
         $result = FountainUsersCreditHistory::__DB__select($creditId);
-        if (($result === false) || (!is_array($result))) {
+        if (!is_object($result)) {
             return false;
         } else {
             return true;
@@ -123,7 +175,7 @@ class FountainUsersCreditHistory extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE from users_credit_history");
+        DB::delete("DELETE from users_credit_history WHERE credit_id = ?", [$this->creditId]);
     }
 
 }

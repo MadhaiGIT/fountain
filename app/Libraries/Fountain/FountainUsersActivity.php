@@ -4,6 +4,23 @@
 namespace App\Libraries\Fountain;
 
 use Illuminate\Support\Facades\DB;
+use DateTime;
+
+abstract class EVENT_TYPES
+{
+    const LOGIN = 'login';
+    const LOGOFF = 'logoff';
+    const ASK_ADVICE = 'ask_advice';
+    const CREDIT_ADDED = 'credit_added';
+    const CREDIT_SPENT = 'credit_spent';
+    const EMAIL_OPEN = 'email_open';
+    const EMAIL_CLICK = 'email_click';
+    const EMAIL_UNSUBSCRIBE = 'email_unsubscribe';
+    const EMAIL_COMPLAIN = 'email_complain';
+    const EMAIL_BOUNCE_HARD = 'email_bounce_hard';
+    const EMAIL_BOUNCE_SOFT = 'email_bounce_soft';
+    const RESET_PASSWORD = 'reset_password';
+}
 
 class FountainUsersActivity extends FountainBase
 {
@@ -15,24 +32,42 @@ class FountainUsersActivity extends FountainBase
     const CLASS_NAME = __CLASS__;
     const PARENT_CLASS = NULL;
 
-    const EVENT_TYPES = array(
-        'LOGIN' => 'login',
-        'LOGOFF' => 'logoff',
-        'ASK_ADVICE' => 'ask_advice',
-        'CREDIT_ADDED' => 'credit_added',
-        'CREDIT_SPENT' => 'credit_spent',
-        'EMAIL_OPEN' => 'email_open',
-        'EMAIL_CLICK' => 'email_click',
-        'EMAIL_UNSUBSCRIBE' => 'email_unsubscribe',
-        'EMAIL_COMPLAIN' => 'email_complain',
-        'EMAIL_BOUNCE_HARD' => 'email_bounce_hard',
-        'EMAIL_BOUNCE_SOFT' => 'email_bounce_soft',
-        'RESET_PASSWORD' => 'reset_password'
-    );
 
     public function __construct($id)
     {
         $this->activityId = $id;
+    }
+
+    public static function __UnitTest()
+    {
+        $userId = 21;
+        $eventDateTime = new DateTime('now');
+        $eventType = EVENT_TYPES::LOGIN;
+
+        $usersActivity = FountainUsersActivity::create($userId, $eventDateTime, $eventType);
+
+        $id = $usersActivity->getId();
+        $objectFromId = new FountainUsersActivity($id);
+
+        if (!FountainBase::UnitTestCompare("Creating", $id, $objectFromId->getId())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Exists After Create", true, FountainUsersActivity::exists($id))) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Event Datetime", $eventDateTime->getTimestamp(), $usersActivity->getEventDatetime()->getTimestamp())) {
+            return false;
+        }
+        if (!FountainBase::UnitTestCompare("Event Type", $eventType, $usersActivity->getEventType())) {
+            return false;
+        }
+
+        $usersActivity->delete();
+        if (!FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersActivity::exists($id))) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -49,7 +84,22 @@ class FountainUsersActivity extends FountainBase
     public function getEventType()
     {
         $result = FountainUsersActivity::__DB__select($this->activityId);
+        $result = Utils::StdClassToArray($result);
         return (string)$result['event_type'];
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEventDatetime()
+    {
+        try {
+            $result = FountainUsersActivity::__DB__select($this->activityId);
+            $result = Utils::StdClassToArray($result);
+            return new DateTime($result['event_datetime']);
+        } catch (\Exception $exception) {
+            return new DateTime();
+        }
     }
 
     /**
@@ -113,7 +163,7 @@ class FountainUsersActivity extends FountainBase
     public static function exists($activityId)
     {
         $result = FountainUsersActivity::__DB__select($activityId);
-        if (($result === false) || (!is_array($result))) {
+        if (!is_object($result)) {
             return false;
         } else {
             return true;
@@ -125,8 +175,6 @@ class FountainUsersActivity extends FountainBase
      */
     public function delete()
     {
-        DB::delete("DELETE FROM users_activity");
+        DB::delete("DELETE FROM users_activity WHERE activity_id = ? ", [$this->activityId]);
     }
-
-
 }

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('test')->group(function () {
-    Route::get('/ping', 'App\Http\Controllers\API\ApiController@ping');
+    Route::get('/ping', 'App\Http\Controllers\API\TestController@ping');
 });
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
