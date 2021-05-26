@@ -10,9 +10,12 @@ Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('web');
+Route::any('/facebook', [LoginController::class, 'facebook']);
+Route::any('/google', [LoginController::class, 'google']);
 
 Route::get('/signup', [RegisterController::class, 'index'])->name('signup');
 Route::post('/signup', [RegisterController::class, 'register'])->middleware('web');
+
 
 Route::prefix('unittest')->group(function () {
     Route::get('/users', [TestController::class, 'users']);

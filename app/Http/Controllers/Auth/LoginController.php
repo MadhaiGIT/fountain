@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -41,5 +42,25 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.'
         ]);
+    }
+
+    public function facebook(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            return Socialite::driver('facebook')->redirect();
+        } else {
+            return json_encode($request);
+        }
+    }
+
+    public function google(Request $request)
+    {
+//        return json_encode($request->input());
+
+        if ($request->isMethod('GET')) {
+            return Socialite::driver('google')->redirect();
+        } else {
+            return json_encode($request);
+        }
     }
 }

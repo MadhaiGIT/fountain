@@ -10,11 +10,11 @@
                 <div class="col-md-7 col-lg-5">
                     <h2>Login to continue</h2>
 
-                    <a class="btn block btn--icon bg--facebook type--uppercase" href="#"> <span class="btn__text">
+                    <a class="btn block btn--icon bg--facebook type--uppercase" href="/facebook"> <span class="btn__text">
                         <i class="socicon-facebook"></i>
                         Login with Facebook
                     </span> </a>
-                    <a class="btn block btn--icon bg--twitter type--uppercase" href="#"> <span class="btn__text">
+                    <a class="btn block btn--icon bg--twitter type--uppercase" href="/google"> <span class="btn__text">
                         <i class="socicon-twitter"></i>
                         Login with google change logo</span> </a>
                     <hr>
