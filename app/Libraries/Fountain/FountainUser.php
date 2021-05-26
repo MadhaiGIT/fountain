@@ -169,11 +169,11 @@ class FountainUser extends FountainBase
     public static function create(
         $nickname,
         $email,
+        $hashedPassword = '',
+        $accountEnabled = false,
         $facebookToken = '',
         $googleToken = '',
-        $accountEnabled = false,
-        $credit = 0,
-        $hashedPassword = ''
+        $credit = 0
     )
     {
         $id = FountainUser::__DB__insert__user(
@@ -211,6 +211,7 @@ class FountainUser extends FountainBase
             'account_enabled' => $accountEnabled,
             'credit' => $credit,
             'hashed_password' => $hashedPassword,
+            'password' => $hashedPassword,
             'signup_url' => $signUpUrl,
             'signup_referer_url' => $signUpRefererUrl,
             'signup_device' => $signUpDevice,
@@ -221,17 +222,17 @@ class FountainUser extends FountainBase
 
     /**
      * Get all data of record from table user give id
-     * @param $userId
+     * @param $value
      * @return FountainUser
      */
-    private static function __DB__select__user($userId)
+    private static function __DB__select__user($value)
     {
         $result = DB::selectOne("
-            SELECT `user_id`, `nickname`, `email`, `facebook_token`, `google_token`, `account_enabled`, `credit`, `hashed_password`
+            SELECT `id`, `nickname`, `email`, `facebook_token`, `google_token`, `account_enabled`, `credit`, `hashed_password`
             FROM users
-            WHERE user_id = ?
+            WHERE id = ?
             ",
-            [$userId],
+            [$value],
             true
         );
 
@@ -254,10 +255,25 @@ class FountainUser extends FountainBase
     }
 
     /**
+     * Check if object with id exists
+     * @param $email
+     * @return bool
+     */
+    public static function emailExists($email)
+    {
+        $result = DB::table('users')->select('*')->where('email', '=', $email)->first();
+        if (!is_object($result)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Delete
      */
     public function delete()
     {
-        DB::delete("DELETE FROM users WHERE user_id = ?", [$this->userId]);
+        DB::delete("DELETE FROM users WHERE id = ?", [$this->userId]);
     }
 }

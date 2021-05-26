@@ -21,10 +21,11 @@ class User extends Authenticatable
         'email',
         'facebook_token',
         'google_token',
-//        'password',
+        'password',
         'hashed_password',
         'account_enabled',
         'account_creation',
+        'remember_token',
         'credit',
         'signup_url',
         'signup_referer_url',
@@ -38,8 +39,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-//        'password',
-//        'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -49,5 +50,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'account_creation' => 'datetime',
+        'credit' => 'int'
     ];
 }
