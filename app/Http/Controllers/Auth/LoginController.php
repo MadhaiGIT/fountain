@@ -36,7 +36,7 @@ class LoginController extends Controller
                 return redirect()->intended($redirect);
             }
 
-            return redirect()->intended('/');
+            return redirect()->intended('query');
         }
 
         return back()->withErrors([
@@ -76,6 +76,16 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $request->session()->put('user', $oldUser);
         }
+
+        return redirect('home');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }
