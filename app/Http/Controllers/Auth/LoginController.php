@@ -29,7 +29,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $redirect = $request->input('redirect');
 
-            $user = DB::table('users')->select(['nickname', 'email', 'credit'])->where(['email' => $request->input('email')])->first();
+            $user = DB::table('users')->select(['id', 'nickname', 'email', 'credit', 'account_enabled'])->where(['email' => $request->input('email')])->first();
             $request->session()->put('user', $user);
 
             if ($redirect != null) {
@@ -46,21 +46,37 @@ class LoginController extends Controller
 
     public function facebook(Request $request)
     {
-        if ($request->isMethod('GET')) {
-            return Socialite::driver('facebook')->redirect();
-        } else {
-            return json_encode($request);
-        }
+        return Socialite::driver('facebook')->redirect();
     }
 
     public function google(Request $request)
     {
-//        return json_encode($request->input());
+        return Socialite::driver('google')->redirect();
+    }
 
-        if ($request->isMethod('GET')) {
-            return Socialite::driver('google')->redirect();
-        } else {
-            return json_encode($request);
+    public function loginSuccess(Request $request)
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+        } catch (\Exception $exception) {
+            return redirect('login');
         }
+
+        if (!FountainUser::emailExists($user->getEmail())) {
+            // sign up???
+            $newUser = FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, '', Hash::make($user->getId()), 0);
+            $request->session()->regenerate();
+            $request->session()->put(
+                'user',
+                ['id' => $newUser->getUserId(), 'nickname' => $newUser->getNickName(), 'email' => $newUser->getCredit(), 'credit' => $newUser->getCredit(), 'accountEnabled' => $newUser->getAccountEnabled()]
+            );
+        } else {
+            // login ???
+            $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
+            $request->session()->regenerate();
+            $request->session()->put('user', $oldUser);
+        }
+
+        return redirect('/');
     }
 }

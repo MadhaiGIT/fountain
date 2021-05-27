@@ -156,6 +156,16 @@ class FountainUser extends FountainBase
     }
 
     /**
+     * @return bool
+     */
+    public function getAccountEnabled()
+    {
+        $result = FountainUser::__DB__select__user($this->userId);
+        $result = Utils::StdClassToArray($result);
+        return (boolean)$result['account_enabled'];
+    }
+
+    /**
      * Create new FountainUser
      * @param $nickname
      * @param $email
