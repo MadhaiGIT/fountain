@@ -47,6 +47,7 @@
                                         href="#">Terms of Service</a></span></div>
                         </div>
                     </form>
+                    <span class="type--fine-print block">Already registered? <a href="/login">Login</a></span>
                 </div>
             </div>
         </div>

@@ -15,6 +15,10 @@ class HomeController
 
     function query(Request $request)
     {
+        $user = $request->session()->get('user');
+        if ($user->credit <= 0) {
+            return redirect('credit');
+        }
         return view('query')->with(['data' => $request->session()->get('user')]);
     }
 
@@ -27,7 +31,11 @@ class HomeController
         $amount = 1;
         $queryCount = 1;
 
-        if ($option == 2) {
+        if ($option == 1) {
+            $amount = 1;
+            $queryCount = 1;
+        }
+        elseif ($option == 2) {
             $amount = 9;
             $queryCount = 10;
         }

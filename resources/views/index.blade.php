@@ -17,7 +17,7 @@
                         <a class="modal-trigger btn btn--primary type--uppercase" href="#"> <span class="btn__text">
 							Notify Me
 						</span> </a>
-                        <div>{{json_encode($data)}}</div>
+{{--                        <div>{{json_encode($data)}}</div>--}}
                         <div class="modal-container">
                             <div class="modal-content imagebg text-center">
                                 <div class="container">

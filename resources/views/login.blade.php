@@ -34,10 +34,9 @@
                     <form action="/login" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12"><input type="text" placeholder="Username" name="email" required
-                                                          value="dev@fountain.com"></div>
+                            <div class="col-md-12"><input type="text" placeholder="Username" name="email" required></div>
                             <div class="col-md-12"><input type="password" placeholder="Password" name="password"
-                                                          required value="password"></div>
+                                                          required></div>
                             <div class="col-md-12"><input type="hidden" placeholder="redirect" name="redirect"
                                                           value="{{$redirect ?? ''}}"></div>
                             <div class="col-md-12">
@@ -45,9 +44,9 @@
                             </div>
                         </div>
                     </form>
-                    <span class="type--fine-print block">Dont have an account yet? <a href="/signup">Create account</a></span>
+                    <span class="type--fine-print block">Don't have an account yet? <a href="/signup">Create account</a></span>
                     <span class="type--fine-print block">Forgot your username or password? <a
-                            href="#">Recover account</a></span></div>
+                            href="/recover">Recover account</a></span></div>
             </div>
         </div>
     </section>

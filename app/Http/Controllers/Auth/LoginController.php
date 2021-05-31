@@ -77,7 +77,7 @@ class LoginController extends Controller
             $request->session()->put('user', $oldUser);
         }
 
-        return redirect('home');
+        return redirect('query');
     }
 
     public function logout(Request $request)
@@ -88,5 +88,13 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function recover() {
+        return view('recover');
+    }
+
+    public function sendResetEmail(Request $request) {
+        return view('index');
     }
 }

@@ -12,6 +12,12 @@ Route::get('/credit', [HomeController::class, 'credit'])->name('credit')->middle
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('web');
+
+Route::get('/recover', [LoginController::class, 'recover'])->name('web');
+Route::post('/recover', [LoginController::class, 'sendResetEmail'])->middleware('web');
+
+
+
 Route::any('/facebook', [LoginController::class, 'facebook']);
 Route::any('/google', [LoginController::class, 'google']);
 Route::any('/logout', [LoginController::class, 'logout']);
