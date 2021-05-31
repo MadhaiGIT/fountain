@@ -95,6 +95,12 @@ class LoginController extends Controller
     }
 
     public function sendResetEmail(Request $request) {
-        return view('index');
+        $email = $request->input('email');
+        if (FountainUser::emailExists($email)) {
+            return 'Reset password email will be sent ....... ';
+        }
+        return back()->withErrors([
+            'email' => 'The provided email address does not exist.'
+        ]);
     }
 }

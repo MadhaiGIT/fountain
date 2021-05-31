@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="/login" method="post">
+                    <form action="/recover" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-12"><input type="text" placeholder="Email" name="email" required></div>
