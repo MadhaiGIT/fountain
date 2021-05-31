@@ -31,7 +31,7 @@
                     <div class="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
                         <div class="bar__module">
                             <ul class="menu-horizontal text-left">
-                                <li><a href="#">MY CREDIT : XXXX TOKENS</a></li>
+                                <li><a href="#">MY CREDIT : {{$data->credit}} TOKENS</a></li>
                             </ul>
                         </div>
                         <div class="bar__module">
