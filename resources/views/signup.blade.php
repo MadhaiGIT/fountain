@@ -26,7 +26,7 @@
                         Sign up with Facebook
                     </span> </a>
                     <a class="btn block btn--icon bg--twitter type--uppercase" href="/google"> <span class="btn__text">
-                        <i class="socicon-twitter"></i>
+                        <i class="socicon-google"></i>
                         Sign up with Google
                     </span> </a>
                     <hr data-title="OR">
