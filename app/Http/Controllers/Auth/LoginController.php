@@ -80,6 +80,32 @@ class LoginController extends Controller
         return redirect('query');
     }
 
+    public function loginFBSuccess(Request $request)
+    {
+        try {
+            $user = Socialite::driver('facebook')->user();
+        } catch (\Exception $exception) {
+            return redirect('login');
+        }
+
+        if (!FountainUser::emailExists($user->getEmail())) {
+            // sign up???
+            $newUser = FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, Hash::make($user->getId()), '', 0);
+            $request->session()->regenerate();
+            $request->session()->put(
+                'user',
+                ['id' => $newUser->getUserId(), 'nickname' => $newUser->getNickName(), 'email' => $newUser->getCredit(), 'credit' => $newUser->getCredit(), 'accountEnabled' => $newUser->getAccountEnabled()]
+            );
+        } else {
+            // login ???
+            $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
+            $request->session()->regenerate();
+            $request->session()->put('user', $oldUser);
+        }
+
+        return redirect('query');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -90,11 +116,13 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    public function recover() {
+    public function recover()
+    {
         return view('recover');
     }
 
-    public function sendResetEmail(Request $request) {
+    public function sendResetEmail(Request $request)
+    {
         $email = $request->input('email');
         if (FountainUser::emailExists($email)) {
             return 'Reset password email will be sent ....... ';

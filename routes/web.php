@@ -26,6 +26,7 @@ Route::get('/signup', [RegisterController::class, 'index'])->name('signup');
 Route::post('/signup', [RegisterController::class, 'register'])->middleware('web');
 
 Route::any('/loginSuccess', [LoginController::class, 'loginSuccess']);
+Route::any('/loginFBSuccess', [LoginController::class, 'loginFBSuccess']);
 
 Route::prefix('unittest')->group(function () {
     Route::get('/users', [TestController::class, 'users']);
