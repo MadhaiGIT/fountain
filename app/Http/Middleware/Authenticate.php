@@ -24,7 +24,7 @@ class Authenticate extends Middleware
     public function handle(Request $request, \Closure $next, $role = 'admin') {
 
         $user = $request->session()->get('user');
-        if (Auth::check()) {
+        if ($user != null) {
             return $next($request);
         }
 
