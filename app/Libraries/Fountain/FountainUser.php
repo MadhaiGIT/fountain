@@ -42,8 +42,8 @@ class FountainUser extends FountainBase
         $googleToken1 = "gg-token-1";
         $googleToken2 = "gg-token-2";
 
-        $user1 = FountainUser::create($nickname1, $email1, $facebookToken1, $googleToken1);
-        $user2 = FountainUser::create($nickname2, $email2, $facebookToken2, $googleToken2);
+        $user1 = FountainUser::create($nickname1, $email1, '', false, $facebookToken1, $googleToken1);
+        $user2 = FountainUser::create($nickname2, $email2, '', false, $facebookToken2, $googleToken2);
 
         $id1 = $user1->getUserId();
         $objectFromId1 = new FountainUser($id1);
