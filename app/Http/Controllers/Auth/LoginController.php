@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Fountain\EVENT_TYPES;
 use App\Libraries\Fountain\FountainUser;
+use App\Libraries\Fountain\FountainUsersActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +33,8 @@ class LoginController extends Controller
 
             $user = DB::table('users')->select(['id', 'nickname', 'email', 'credit', 'account_enabled'])->where(['email' => $request->input('email')])->first();
             $request->session()->put('user', $user);
+
+            FountainUsersActivity::create($user->id, null, EVENT_TYPES::LOGIN);
 
             if ($redirect != null) {
                 return redirect()->intended($redirect);
@@ -59,22 +63,27 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver('google')->user();
         } catch (\Exception $exception) {
-            return redirect('login');
+            return redirect('/');
         }
 
         if (!FountainUser::emailExists($user->getEmail())) {
             // sign up???
-            $newUser = FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, '', Hash::make($user->getId()), 0);
+            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, '', Hash::make($user->getId()), 0);
             $request->session()->regenerate();
+            $newUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->put(
                 'user',
-                ['id' => $newUser->getUserId(), 'nickname' => $newUser->getNickName(), 'email' => $newUser->getCredit(), 'credit' => $newUser->getCredit(), 'accountEnabled' => $newUser->getAccountEnabled()]
+                $newUser
             );
+            FountainUsersActivity::create($newUser->id, null, EVENT_TYPES::LOGIN);
+
         } else {
             // login ???
             $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->regenerate();
             $request->session()->put('user', $oldUser);
+            FountainUsersActivity::create($oldUser->id, null, EVENT_TYPES::LOGIN);
+
         }
 
         return redirect('query');
@@ -90,17 +99,21 @@ class LoginController extends Controller
 
         if (!FountainUser::emailExists($user->getEmail())) {
             // sign up???
-            $newUser = FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, Hash::make($user->getId()), '', 0);
+            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, Hash::make($user->getId()), '', 0);
             $request->session()->regenerate();
+            $newUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->put(
                 'user',
-                ['id' => $newUser->getUserId(), 'nickname' => $newUser->getNickName(), 'email' => $newUser->getCredit(), 'credit' => $newUser->getCredit(), 'accountEnabled' => $newUser->getAccountEnabled()]
+                $newUser
             );
+            FountainUsersActivity::create($newUser->id, null, EVENT_TYPES::LOGIN);
+
         } else {
             // login ???
             $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->regenerate();
             $request->session()->put('user', $oldUser);
+            FountainUsersActivity::create($oldUser->id, null, EVENT_TYPES::LOGIN);
         }
 
         return redirect('query');
@@ -108,6 +121,9 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = $request->session()->get('user');
+        FountainUsersActivity::create($user->id, null, EVENT_TYPES::LOGOFF);
+
         Auth::logout();
 
         $request->session()->invalidate();

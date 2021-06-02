@@ -402,7 +402,13 @@
             } else {
                 document.querySelector("button").disabled = true;
             }
-            document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+            if (event.error) {
+                document.querySelector(".result-message").classList.add("hidden");
+                document.querySelector("#card-error").textContent = event.error.message;
+            } else {
+                document.querySelector("#card-error").textContent = "";
+
+            }
         });
         // var form = document.getElementById("payment-form");
         // form.addEventListener("submit", function (event) {

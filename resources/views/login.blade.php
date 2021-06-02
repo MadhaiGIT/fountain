@@ -34,7 +34,7 @@
                     <form action="/login" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12"><input type="text" placeholder="Username" name="email" required></div>
+                            <div class="col-md-12"><input type="text" placeholder="Email " name="email" required></div>
                             <div class="col-md-12"><input type="password" placeholder="Password" name="password"
                                                           required></div>
                             <div class="col-md-12"><input type="hidden" placeholder="redirect" name="redirect"
@@ -83,8 +83,8 @@
             if (response.status === 'connected') {   // Logged into your webpage and Facebook.
                 testAPI();
             } else {                                 // Not logged into your webpage or we are unable to tell.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                    'into this webpage.';
+                // document.getElementById('status').innerHTML = 'Please log ' +
+                //     'into this webpage.';
             }
         }
 
@@ -114,8 +114,8 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function (response) {
                 console.log('Successful login for: ' + response.name);
-                document.getElementById('status').innerHTML =
-                    'Thanks for logging in, ' + response.name + '!';
+                // document.getElementById('status').innerHTML =
+                //     'Thanks for logging in, ' + response.name + '!';
             });
         }
 

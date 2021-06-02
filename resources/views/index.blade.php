@@ -2,6 +2,50 @@
 
 @section('title', 'Home')
 
+@section('navigation')
+    <div class="via-1621970940043" via="via-1621970940043" vio="NAVIGATION">
+        <div class="bar bar--sm visible-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3 col-md-2">
+                        <a href="/"> <img class="logo logo-dark" alt="logo" src="{{asset('img/logo-dark.png')}}"> <img
+                                class="logo logo-light" alt="logo" src="{{asset('img/logo-light.png')}}"> </a>
+                    </div>
+                    <div class="col-9 col-md-10 text-right">
+                        <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i
+                                class="icon icon--sm stack-interface stack-menu"></i> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav id="menu1" class="bar bar-1 hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-1 col-md-2 hidden-xs">
+                        <div class="bar__module">
+                            <a href="/"> <img class="logo logo-dark" alt="logo"
+                                              src="{{asset('img/logo-dark.png')}}">
+                                <img class="logo logo-light" alt="logo" src="{{asset('img/logo-light.png')}}"> </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
+                        <div class="bar__module">
+                            <a class="btn btn--sm type--uppercase" href="/login">
+                                <span class="btn__text">LOGIN&nbsp;</span>
+                            </a>
+                            <a class="btn btn--sm btn--primary type--uppercase inner-link" href="/signup"
+                               target="_self">
+                                <span class="btn__text">SIGN UP</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+@endsection
+
 @section('content')
     <a id="index" class="in-page-link"></a>
     <section class="imagebg height-100 text-center" data-gradient-bg="#fbcd10,#d79d04,#fbd845,#805806">
@@ -17,7 +61,7 @@
                         <a class="modal-trigger btn btn--primary type--uppercase" href="#"> <span class="btn__text">
 							Notify Me
 						</span> </a>
-                        <div>{{json_encode($data)}}</div>
+{{--                        <div>{{json_encode($data)}}</div>--}}
                         <div class="modal-container">
                             <div class="modal-content imagebg text-center">
                                 <div class="container">

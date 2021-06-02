@@ -11,6 +11,15 @@
             <div class="row">
                 <div class="col-lg-5 col-md-7">
                     <h2>Fountain project Signup</h2>
+                    <a class="btn block btn--icon bg--facebook type--uppercase" href="#"> <span class="btn__text">
+                        <i class="socicon-facebook"></i>
+                        Sign up with Facebook
+                    </span> </a>
+                    <a class="btn block btn--icon bg--twitter type--uppercase" href="/google"> <span class="btn__text">
+                        <i class="socicon-google"></i>
+                        Sign up with Google
+                    </span> </a>
+                    <hr data-title="OR">
                     @if ($errors->any())
                         <div class="alert alert__body text-danger">
                             <ul>
@@ -21,15 +30,6 @@
                         </div>
                     @endif
 
-                    <a class="btn block btn--icon bg--facebook type--uppercase" href="#"> <span class="btn__text">
-                        <i class="socicon-facebook"></i>
-                        Sign up with Facebook
-                    </span> </a>
-                    <a class="btn block btn--icon bg--twitter type--uppercase" href="/google"> <span class="btn__text">
-                        <i class="socicon-google"></i>
-                        Sign up with Google
-                    </span> </a>
-                    <hr data-title="OR">
                     <form action="/signup" method="post">
                         @csrf
                         <div class="row">

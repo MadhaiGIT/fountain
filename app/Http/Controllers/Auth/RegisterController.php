@@ -34,6 +34,6 @@ class RegisterController extends Controller
             return redirect()->intended('login');
         }
 
-        return back()->withErrors(['email' => 'The email already exists.']);
+        return back()->withErrors(['email' => '<a href="/recover">The email already exists.</a>']);
     }
 }
