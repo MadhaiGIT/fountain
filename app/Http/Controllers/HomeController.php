@@ -26,13 +26,13 @@ class HomeController
     {
 //        return json_encode($request->session()->get('user'));
         \Stripe\Stripe::setApiKey(env('STRIPE_TEST_API_KEY'));
-        \Stripe\WebhookEndpoint::create([
+        /*\Stripe\WebhookEndpoint::create([
             'url' => env('APP_URL') . '/stripe/webhook',
             'enabled_events' => [
                 'charge.failed',
                 'charge.succeeded',
             ],
-        ]);
+        ]);*/
 
         $option = $request->get('option', 1);
 
