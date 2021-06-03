@@ -163,11 +163,10 @@ class FountainUsersActivity extends FountainBase
     public static function exists($activityId)
     {
         $result = FountainUsersActivity::__DB__select($activityId);
-        if (!is_object($result)) {
+        if ($result == null || !is_object($result)) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

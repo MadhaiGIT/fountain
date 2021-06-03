@@ -11,7 +11,8 @@
             <div class="row">
                 <div class="col-lg-5 col-md-7">
                     <h2>Fountain project Signup</h2>
-                    <a class="btn block btn--icon bg--facebook type--uppercase" href="/facebook"> <span class="btn__text">
+                    <a class="btn block btn--icon bg--facebook type--uppercase" href="/facebook"> <span
+                            class="btn__text">
                         <i class="socicon-facebook"></i>
                         Sign up with Facebook
                     </span> </a>
@@ -24,7 +25,11 @@
                         <div class="alert alert__body text-danger">
                             <ul>
                                 @foreach($errors->all() as $error)
-                                    <li>{{$error}}</li>
+                                    @if ($error == 'The email already exists.')
+                                        <li><a href="/recover" class="text-danger">{{$error}}</a></li>
+                                    @else
+                                        <li>{{$error}}</li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </div>

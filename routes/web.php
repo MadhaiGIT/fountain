@@ -31,6 +31,9 @@ Route::any('/loginSuccess', [LoginController::class, 'loginSuccess']);
 Route::any('/loginFBSuccess', [LoginController::class, 'loginFBSuccess']);
 
 Route::prefix('unittest')->group(function () {
+    Route::get('/', function () {
+        return view('test.unittest');
+    });
     Route::get('/users', [TestController::class, 'users']);
     Route::get('/usersActivity', [TestController::class, 'usersActivity']);
     Route::get('/usersCreditHistory', [TestController::class, 'usersCreditHistory']);
