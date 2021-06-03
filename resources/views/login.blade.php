@@ -53,17 +53,18 @@
     <script>
         function fbLogin() {
             console.log('fbLogin');
-            FB.login(function(response) {
+            FB.login(function (response) {
 
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
-                    //console.log(response); // dump complete info
+                    console.log('authResponse', response); // dump complete info
                     access_token = response.authResponse.accessToken; //get access token
                     user_id = response.authResponse.userID; //get FB UID
 
-                    FB.api('/me', function(response) {
+                    FB.api('/me', function (response) {
                         user_email = response.email; //get user email
                         // you can store this data into your database
+                        console.log('/me', response);
                     });
 
                 } else {
@@ -113,7 +114,7 @@
         function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function (response) {
-                console.log('Successful login for: ' + response.name);
+                console.log('Successful login for: ' + response);
                 // document.getElementById('status').innerHTML =
                 //     'Thanks for logging in, ' + response.name + '!';
             });

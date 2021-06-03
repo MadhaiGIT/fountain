@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-lg-5 col-md-7">
                     <h2>Fountain project Signup</h2>
-                    <a class="btn block btn--icon bg--facebook type--uppercase" href="#"> <span class="btn__text">
+                    <a class="btn block btn--icon bg--facebook type--uppercase" href="/facebook"> <span class="btn__text">
                         <i class="socicon-facebook"></i>
                         Sign up with Facebook
                     </span> </a>
@@ -44,7 +44,7 @@
                                 </button>
                             </div>
                             <div class="col-12"><span class="type--fine-print">By signing up, you agree to the <a
-                                        href="#">Terms of Service</a></span></div>
+                                        href="/policy">Terms of Service</a></span></div>
                         </div>
                     </form>
                     <span class="type--fine-print block">Already registered? <a href="/login">Login</a></span>

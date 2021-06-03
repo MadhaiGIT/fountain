@@ -42,18 +42,13 @@ class HomeController
         if ($option == 1) {
             $amount = 1;
             $queryCount = 1;
-        }
-        elseif ($option == 2) {
+        } elseif ($option == 2) {
             $amount = 9;
             $queryCount = 10;
-        }
-        elseif ($option == 3)
-        {
+        } elseif ($option == 3) {
             $amount = 40;
             $queryCount = 50;
-        }
-        elseif ($option == 4)
-        {
+        } elseif ($option == 4) {
             $amount = 75;
             $queryCount = 100;
         }
@@ -70,5 +65,10 @@ class HomeController
             'amount' => $amount,
             'queryCount' => $queryCount,
         ]);
+    }
+
+    function policy()
+    {
+        return view('policy');
     }
 }

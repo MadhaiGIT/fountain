@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/query', [HomeController::class, 'query'])->name('query')->middleware('auth');
 Route::get('/credit', [HomeController::class, 'credit'])->name('credit')->middleware('auth');
+Route::get('/policy', [HomeController::class, 'policy'])->name('policy');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('web');
