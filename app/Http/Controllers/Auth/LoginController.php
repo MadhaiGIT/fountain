@@ -122,7 +122,9 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $user = $request->session()->get('user');
-        FountainUsersActivity::create($user->id, null, EVENT_TYPES::LOGOFF);
+        if ($user && $user->id) {
+            FountainUsersActivity::create($user->id, null, EVENT_TYPES::LOGOFF);
+        }
 
         Auth::logout();
 

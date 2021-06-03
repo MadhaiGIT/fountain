@@ -299,6 +299,15 @@
                     Refresh the page to pay again.
                 </p>
             </div>
+            <div class="hidden">
+                <form id="pForm" method="post" action="/credit">
+                    @csrf
+                    <input type="hidden" name="id" id="pId">
+                    <input type="hidden" name="amount" id="pAmount">
+                    <input type="hidden" name="status" id="pStatus">
+                    <input type="hidden" name="currency" id="pCurrency">
+                </form>
+            </div>
         </div>
     </section>
     <script src="https://js.stripe.com/v3/"></script>
@@ -320,7 +329,14 @@
 
                     } else {
                         // The payment succeeded!
+                        console.log('complete', result);
+                        var pi = result.paymentIntent;
+                        $('#pId').val(pi.id);
+                        $('#pAmount').val(pi.amount);
+                        $('#pCurrency').val(pi.currency);
+                        $('#pStatus').val(pi.status);
                         orderComplete(result.paymentIntent.id);
+                        $('#pForm').submit();
                     }
                 });
         }
@@ -329,8 +345,7 @@
         // UI helpers
         // Shows a success message when the payment is complete
         function orderComplete(paymentIntentId) {
-            console.log('orderComplete');
-
+            console.log('orderComplete', paymentIntentId);
             loading(false);
             document
                 .querySelector(".result-message a")
@@ -369,7 +384,7 @@
         }
 
 
-        var stripe = Stripe('{{env('STRIPE_TEST_PUBLIC_KEY')}}');
+        var stripe = Stripe('{{env('STRIPE_TEST_KEY')}}');
         var purchase = {
             items: [{id: "queries"}]
         };
@@ -417,7 +432,7 @@
         // });
 
         function buyNow() {
-            console.log('buyNow');
+            console.log('buyNow', stripe, card);
             payWithCard(stripe, card, '{{$intent->client_secret}}');
         }
     </script>

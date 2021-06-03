@@ -31,18 +31,23 @@ class RegisterController extends Controller
 
         if (!FountainUser::emailExists($email)) {
             FountainUser::create($nickname, $email, Hash::make($password));
+            $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $email])->first();
+            $request->session()->regenerate();
+            $request->session()->put('user', $oldUser);
 
-            return redirect()->intended('login');
+            return redirect('/query');
         } else {
             $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled', 'hashed_password'])->where(['email' => $email])->first();
             if (is_null($oldUser->hashed_password) || $oldUser->hashed_password == '') {
                 DB::table('user')->update([
                     'hashed_password' => Hash::make($password)
                 ]);
-                return redirect('/login');
+                $request->session()->regenerate();
+                $request->session()->put('user', $oldUser);
+                return redirect('/query');
             }
         }
 
-        return back()->withErrors(['email' => '<a href="/recover">The email already exists.</a>']);
+        return back()->withErrors(['email' => 'The email already exists.']);
     }
 }

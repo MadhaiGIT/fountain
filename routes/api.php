@@ -19,7 +19,7 @@ Route::prefix('test')->group(function () {
     Route::get('/ping', 'App\Http\Controllers\API\TestController@ping');
 });
 
-Route::any('/chargeStatus', [ApiController::class, 'chargeStatus']);
+Route::post('/chargeStatus', [ApiController::class, 'chargeStatus']);
 
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
