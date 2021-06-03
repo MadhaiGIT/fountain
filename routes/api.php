@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('test')->group(function () {
     Route::get('/ping', 'App\Http\Controllers\API\TestController@ping');
 });
+
+Route::any('/chargeStatus', [ApiController::class, 'chargeStatus']);
+
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();

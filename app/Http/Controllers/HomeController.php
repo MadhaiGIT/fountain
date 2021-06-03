@@ -72,10 +72,4 @@ class HomeController
     {
         return view('policy');
     }
-
-    function chargeStatus(Request $request) {
-        $json = json_encode($request);
-        FountainUsersRating::create(0, 0, null, 0, $json);
-        return 'ok';
-    }
 }
