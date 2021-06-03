@@ -2753,78 +2753,9 @@
                                                                                 data-custom-class="body_text"><bdt
                                                                                     class="block-component"></bdt>email us at <bdt
                                                                                     class="question">support@secretsadvisor.com</bdt><bdt
-                                                                                    class="statement-end-if-in-editor"></bdt></span></span><span
-                                                                            style="font-size: 15px; color: rgb(89, 89, 89);"><span
-                                                                                style="font-size: 15px; color: rgb(89, 89, 89);"><span
-                                                                                    data-custom-class="body_text"> or by post to:</span></span></span></span></span></span>
+                                                                                    class="statement-end-if-in-editor"></bdt></span></span></span></span></span>
                                                         </div>
-                                                        <div style="line-height: 1.5;"><br></div>
-                                                        <div style="line-height: 1.5;"><span
-                                                                style="font-size: 15px; color: rgb(89, 89, 89);"><span
-                                                                    style="font-size: 15px; color: rgb(89, 89, 89);"><span
-                                                                        data-custom-class="body_text"><span
-                                                                            style="font-size: 15px;"><span
-                                                                                style="color: rgb(89, 89, 89);"><span
-                                                                                    style="color: rgb(89, 89, 89);"><span
-                                                                                        data-custom-class="body_text"><bdt
-                                                                                            class="question">SecretsAdvisor</bdt></span></span></span></span></span><span
-                                                                        data-custom-class="body_text"><span
-                                                                            style="color: rgb(89, 89, 89);"><span
-                                                                                data-custom-class="body_text"><bdt
-                                                                                    class="block-component"></bdt></span></span></bdt></span></span></span></span>
-                                                        </div>
-                                                        <div style="line-height: 1.5;"><span
-                                                                style="font-size: 15px;"><span
-                                                                    data-custom-class="body_text"><bdt class="question">1107 Cosby st</bdt><span
-                                                                        style="color: rgb(89, 89, 89);"><span
-                                                                            style="font-size: 15px;"><bdt
-                                                                                class="block-component"></bdt></span></span></span></bdt></span>
-                                                        </div>
-                                                        <div style="line-height: 1.5;"><span
-                                                                style="font-size: 15px;"><span
-                                                                    data-custom-class="body_text"><bdt class="question">Lynchburg</bdt><span
-                                                                        style="color: rgb(89, 89, 89);"><span
-                                                                            style="font-size: 15px;"><bdt
-                                                                                class="block-component"></bdt><bdt
-                                                                                class="block-component"></bdt>, <bdt
-                                                                                class="question">VA</bdt><bdt
-                                                                                class="statement-end-if-in-editor"></bdt><bdt
-                                                                                class="block-component"></bdt><bdt
-                                                                                class="block-component"></bdt> <bdt
-                                                                                class="question">24504</bdt><bdt
-                                                                                class="statement-end-if-in-editor"></bdt></span><span
-                                                                            style="font-size: 15px;"><bdt
-                                                                                class="block-component"></bdt><bdt
-                                                                                class="block-component"></bdt><bdt
-                                                                                class="block-component"></bdt></span></span></span></span>
-                                                        </div>
-                                                        <div style="line-height: 1.5;"><span
-                                                                data-custom-class="body_text"
-                                                                style="font-size: 15px;"><bdt
-                                                                    class="question">United States<span
-                                                                        data-custom-class="body_text"><span
-                                                                            style="color: rgb(89, 89, 89);"><span
-                                                                                style="font-size: 15px;"><span
-                                                                                    data-custom-class="body_text"><span
-                                                                                        style="color: rgb(89, 89, 89);"><span
-                                                                                            style="font-size: 15px;"><span
-                                                                                                data-custom-class="body_text"><span
-                                                                                                    style="color: rgb(89, 89, 89);"><span
-                                                                                                        style="font-size: 15px;"><bdt
-                                                                                                            class="statement-end-if-in-editor"></bdt></span></span></span></span></span></span><bdt
-                                                                                    class="else-block"></bdt></span></span></span></bdt><bdt
-                                                                    class="statement-end-if-in-editor"></bdt></span></span></span>
-                                                            <span data-custom-class="body_text"><span
-                                                                    style="color: rgb(89, 89, 89);"><span
-                                                                        style="font-size: 15px;"><bdt
-                                                                            class="statement-end-if-in-editor"></bdt></span></span></span><span
-                                                                style="color: rgb(89, 89, 89);"><span
-                                                                    style="font-size: 15px;"><span
-                                                                        data-custom-class="body_text"><bdt
-                                                                            class="block-component"><bdt
-                                                                                class="block-component"><bdt
-                                                                                    class="block-component"></bdt></bdt></span></span>
-                                                        </div>
+
                                                         <div style="line-height: 1.5;"><br></div>
                                                         <div id="request" style="line-height: 1.5;"><span
                                                                 style="color: rgb(127, 127, 127);"><span
