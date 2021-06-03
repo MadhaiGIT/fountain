@@ -200,9 +200,9 @@
                             <a class="btn btn--sm type--uppercase" href="/logout">
                                 <span class="btn__text">LOGOFF&nbsp;</span>
                             </a>
-                            <a class="btn btn--sm btn--primary type--uppercase inner-link" href="/credit"
+                            <a class="btn btn--sm btn--primary type--uppercase inner-link" href="/query"
                                target="_self">
-                                <span class="btn__text">Buy CREDIT</span>
+                                <span class="btn__text">Query</span>
                             </a>
                         </div>
                     </div>
