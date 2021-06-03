@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Libraries\Fountain\FountainUsersRating;
 use Illuminate\Http\Request;
 
 class HomeController
@@ -70,5 +71,11 @@ class HomeController
     function policy()
     {
         return view('policy');
+    }
+
+    function chargeStatus(Request $request) {
+        $json = json_encode($request);
+        FountainUsersRating::create(0, 0, null, 0, $json);
+        return 'ok';
     }
 }

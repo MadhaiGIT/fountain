@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Libraries\Fountain\FountainUser;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -32,6 +33,14 @@ class RegisterController extends Controller
             FountainUser::create($nickname, $email, Hash::make($password));
 
             return redirect()->intended('login');
+        } else {
+            $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled', 'hashed_password'])->where(['email' => $email])->first();
+            if (is_null($oldUser->hashed_password) || $oldUser->hashed_password == '') {
+                DB::table('user')->update([
+                    'hashed_password' => Hash::make($password)
+                ]);
+                return redirect('/login');
+            }
         }
 
         return back()->withErrors(['email' => '<a href="/recover">The email already exists.</a>']);
