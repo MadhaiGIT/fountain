@@ -68,7 +68,7 @@ class LoginController extends Controller
 
         if (!FountainUser::emailExists($user->getEmail())) {
             // sign up???
-            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, '', Hash::make($user->getId()), 0);
+            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), '', false, '', Hash::make($user->getId()), 0);
             $request->session()->regenerate();
             $newUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->put(
@@ -99,7 +99,7 @@ class LoginController extends Controller
 
         if (!FountainUser::emailExists($user->getEmail())) {
             // sign up???
-            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), $user->getId(), false, Hash::make($user->getId()), '', 0);
+            FountainUser::create($user->getNickname() != null ? $user->getNickname() : '', $user->getEmail(), '', false, Hash::make($user->getId()), '', 0);
             $request->session()->regenerate();
             $newUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->put(
