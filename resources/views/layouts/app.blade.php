@@ -7,6 +7,7 @@
 
     @include('layouts.styles')
 
+    @yield('styles')
 </head>
 <body data-smooth-scroll-offset="77">
 <div id="fb-root"></div>
@@ -20,6 +21,8 @@
 </div>
 
 @include('layouts.scripts')
+
+@yield('scripts')
 </body>
 
 </html>

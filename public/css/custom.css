@@ -7,3 +7,7 @@ a.payment-option .pricing:hover {
     background: rgba(200,200,240,0.3);
     transition: 500ms;
 }
+
+html {
+    scroll-behavior: smooth;
+}

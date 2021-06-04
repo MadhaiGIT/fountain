@@ -19,6 +19,11 @@ Route::prefix('test')->group(function () {
     Route::get('/ping', 'App\Http\Controllers\API\TestController@ping');
 });
 
+Route::prefix('query')->group(function() {
+    Route::post('/', [ApiController::class, 'queryResult']);
+    Route::post('/rating', [ApiController::class, 'updateRating']);
+});
+
 Route::post('/chargeStatus', [ApiController::class, 'chargeStatus']);
 
 

@@ -5,20 +5,25 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CreditController;
+use App\Http\Controllers\QueryController;
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/query', [HomeController::class, 'query'])->name('query')->middleware('auth');
-Route::get('/credit', [HomeController::class, 'credit'])->name('credit')->middleware('auth');
-Route::post('/credit', [HomeController::class, 'purchase'])->name('credit')->middleware('auth');
+Route::get('/credit', [CreditController::class, 'credit'])->name('credit')->middleware('auth');
+Route::post('/credit', [CreditController::class, 'purchase'])->name('credit')->middleware('auth');
 Route::get('/policy', [HomeController::class, 'policy'])->name('policy');
+
+Route::prefix('query')->middleware('auth')->group(function() {
+    Route::get('/', [QueryController::class, 'query'])->name('query');
+
+});
+
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('web');
 
 Route::get('/recover', [LoginController::class, 'recover'])->name('web');
 Route::post('/recover', [LoginController::class, 'sendResetEmail'])->middleware('web');
-
-
 
 Route::any('/facebook', [LoginController::class, 'facebook']);
 Route::any('/google', [LoginController::class, 'google']);

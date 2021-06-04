@@ -310,6 +310,10 @@
             </div>
         </div>
     </section>
+
+@endsection
+
+@section('scripts')
     <script src="https://js.stripe.com/v3/"></script>
     <script>
 
@@ -382,7 +386,6 @@
                 document.querySelector("#button-text").classList.remove("hidden");
             }
         }
-
 
         var stripe = Stripe('{{env('STRIPE_TEST_KEY')}}');
         var purchase = {
