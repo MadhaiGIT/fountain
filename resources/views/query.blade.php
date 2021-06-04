@@ -273,6 +273,12 @@
             $('#accept').click(function () {
                 submitQuery();
             })
+
+            var lastQuery = window.localStorage.getItem('lastQuery');
+            if (lastQuery.trim().length) {
+                $('#query').val(lastQuery);
+            }
         });
+
     </script>
 @endsection
