@@ -34,7 +34,7 @@
                     <form action="/login" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12"><input type="text" placeholder="Email " name="email" required></div>
+                            <div class="col-md-12"><input type="email" placeholder="Email " name="email" required></div>
                             <div class="col-md-12"><input type="password" placeholder="Password" name="password"
                                                           required></div>
                             <div class="col-md-12"><input type="hidden" placeholder="redirect" name="redirect"
