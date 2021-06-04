@@ -11,7 +11,7 @@
                     <h2>Login to continue</h2>
 
                     <a class="btn block btn--icon bg--facebook type--uppercase"
-                       href="#" onclick="fbLogin()"> <span
+                       href="/facebook" onclick="fbLogin()"> <span
                             class="btn__text">
                         <i class="socicon-facebook"></i>
                         Login with Facebook
