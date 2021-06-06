@@ -22,7 +22,7 @@ class FountainUsersFinance extends FountainBase
         $this->financeId = $id;
     }
 
-    public static function __UnitTest()
+    public static function __UnitTest(): bool
     {
         $userId = 21;
         $financeDatetime = new DateTime('now');
@@ -40,7 +40,7 @@ class FountainUsersFinance extends FountainBase
         FountainBase::UnitTestCompare("Finance Amount", $financeAmount, $object->getFinanceAmount());
 
         $object->delete();
-        FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersActivity::exists($id));
+        FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersFinance::exists($id));
 
         return true;
     }
@@ -56,7 +56,7 @@ class FountainUsersFinance extends FountainBase
     /**
      * @return double
      */
-    public function getFinanceAmount()
+    public function getFinanceAmount(): float
     {
         $result = FountainUsersFinance::__DB__select($this->financeId);
         $result = Utils::StdClassToArray($result);
@@ -66,7 +66,7 @@ class FountainUsersFinance extends FountainBase
     /**
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         $result = FountainUsersFinance::__DB__select($this->financeId);
         $result = Utils::StdClassToArray($result);
@@ -76,7 +76,7 @@ class FountainUsersFinance extends FountainBase
     /**
      * @return DateTime
      */
-    public function getFinanceDatetime()
+    public function getFinanceDatetime(): DateTime
     {
         try {
             $result = FountainUsersFinance::__DB__select($this->financeId);
@@ -94,7 +94,7 @@ class FountainUsersFinance extends FountainBase
      * @param $currency
      * @return FountainUsersFinance
      */
-    public static function create($userId, $financeDatetime, $financeAmount, $currency)
+    public static function create($userId, $financeDatetime, $financeAmount, $currency): FountainUsersFinance
     {
         $id = FountainUsersFinance::__DB__insert($userId, $financeDatetime, $financeAmount, $currency);
         return new FountainUsersFinance($id);
@@ -107,7 +107,7 @@ class FountainUsersFinance extends FountainBase
      * @param $currency
      * @return int
      */
-    private static function __DB__insert($userId, $financeDatetime, $financeAmount, $currency)
+    private static function __DB__insert($userId, $financeDatetime, $financeAmount, $currency): int
     {
         $id = DB::table('users_finance')->insertGetId(
             array(
@@ -143,7 +143,7 @@ class FountainUsersFinance extends FountainBase
      * @param $financeId
      * @return bool
      */
-    public static function exists($financeId)
+    public static function exists($financeId): bool
     {
         $result = FountainUsersFinance::__DB__select($financeId);
         if (($result === false) || (!is_object($result))) {

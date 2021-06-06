@@ -160,7 +160,7 @@ class FountainUsersActivity extends FountainBase
      * @param $activityId
      * @return bool
      */
-    public static function exists($activityId)
+    public static function exists($activityId): bool
     {
         $result = FountainUsersActivity::__DB__select($activityId);
         if ($result == null || !is_object($result)) {
