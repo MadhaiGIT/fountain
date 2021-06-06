@@ -35,6 +35,11 @@ Route::post('/signup', [RegisterController::class, 'register'])->middleware('web
 Route::any('/loginSuccess', [LoginController::class, 'loginSuccess']);
 Route::any('/loginFBSuccess', [LoginController::class, 'loginFBSuccess']);
 
+Route::prefix('email')->group(function() {
+    Route::any('/verify', [RegisterController::class, 'verifyEmail']);
+    Route::any('/confirm', [RegisterController::class, 'confirmEmail']);
+});
+
 Route::prefix('unittest')->group(function () {
     Route::get('/', function () {
         return view('test.unittest');
