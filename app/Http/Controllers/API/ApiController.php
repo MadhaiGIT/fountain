@@ -39,7 +39,7 @@ class ApiController extends BaseController
 
             // check if credit is enough,
             $deductAmount = 1;
-            if ($credit > $deductAmount) {
+            if ($credit >= $deductAmount) {
                 // deduct credit
                 DB::table('users')->where(['id' => $userId])->update(['credit' => $credit - $deductAmount]);
 
@@ -87,11 +87,13 @@ class ApiController extends BaseController
     function updateRating(Request $request)
     {
         $ratingId = $request->get('ratingId');
+        $userId = $request->get('userId');
         $value = $request->get('value');
         $result = ['ratingId' => $ratingId, 'value' => $value, 'success' => false];
         $time = new DateTime('now');
 
         try {
+//            FountainUsersActivity::create($userId, $time, EVENT_TYPES::ASK_ADVICE)
             DB::table('users_rating')->where('rating_id', $ratingId)->update(['rating_value' => $value, 'rating_datetime' => $time]);
             $result['success'] = true;
         } catch (\Exception $e) {

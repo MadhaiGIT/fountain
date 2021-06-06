@@ -127,7 +127,8 @@
                         <h3>Result 1 from API</h3>
                         <p class="lead" id="result1"></p>
                         <hr class="short">
-                        <div id="rat1" class="rateit" data-rateit-mode="font" style="font-size: 30px" data-rateit-resetable="false" ></div>
+                        <div id="rat1" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                             data-rateit-resetable="false"></div>
                     </div>
                 </div>
             </div>
@@ -140,7 +141,8 @@
                     <div class="switchable__text">
                         <h2>Result 2 from API</h2>
                         <p class="lead" id="result2"></p>
-                        <div id="rat2" class="rateit" data-rateit-mode="font" style="font-size: 30px" data-rateit-resetable="false" ></div>
+                        <div id="rat2" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                             data-rateit-resetable="false"></div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 col-12 text-center"><img alt="Image" src="{{asset('img/device-2.png')}}">
@@ -158,7 +160,8 @@
                         <h3>Result 3 from API</h3>
                         <p class="lead" id="result3"></p>
                         <hr class="short">
-                        <div id="rat3" class="rateit" data-rateit-mode="font" style="font-size: 30px" data-rateit-resetable="false" ></div>
+                        <div id="rat3" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                             data-rateit-resetable="false"></div>
                     </div>
                 </div>
             </div>
@@ -174,7 +177,8 @@
                         <h3>Result 4 from API</h3>
                         <p class="lead" id="result4"></p>
                         <hr class="short">
-                        <div id="rat4" class="rateit" data-rateit-mode="font" style="font-size: 30px" data-rateit-resetable="false" ></div>
+                        <div id="rat4" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                             data-rateit-resetable="false"></div>
                     </div>
                 </div>
             </div>
@@ -193,6 +197,7 @@
                 data: {
                     ratingId: ratingId,
                     value: value,
+                    userId: '{{$data->id}}'
                 },
                 success: function (res) {
                     console.log(res);
@@ -234,6 +239,8 @@
                                     window.location.href = '#secResult1';
                                     window.localStorage.setItem('lastQuery', '');
                                 }
+                                // $('#query').text('');
+                                $('#secDisclaimer').addClass('hidden')
                             } else {
                                 if (data.type === 'credit_insufficient') {
                                     window.localStorage.setItem('lastQuery', query);
@@ -256,6 +263,9 @@
 
         function showDisclaimer() {
             document.getElementById('secDisclaimer').classList.remove('hidden');
+            for (var i = 1; i < 5; i++) {
+                $('#secResult' + i).addClass('hidden');
+            }
             window.scrollTo(0, document.body.scrollHeight)
         }
 
