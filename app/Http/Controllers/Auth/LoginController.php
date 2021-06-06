@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Libraries\Fountain\EVENT_TYPES;
 use App\Libraries\Fountain\FountainUser;
 use App\Libraries\Fountain\FountainUsersActivity;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -142,7 +143,10 @@ class LoginController extends Controller
     public function sendResetEmail(Request $request)
     {
         $email = $request->input('email');
+        $time = new DateTime('now');
         if (FountainUser::emailExists($email)) {
+            $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $email])->first();
+            FountainUsersActivity::create($oldUser->id, $time, EVENT_TYPES::RESET_PASSWORD);
             return 'Reset password email will be sent ....... ';
         }
         return back()->withErrors([
