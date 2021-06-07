@@ -127,7 +127,7 @@
                         <h3>Result 1 from API</h3>
                         <p class="lead" id="result1"></p>
                         <hr class="short">
-                        <div id="rat1" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                        <div id="rat1" class="rateit" data-rateit-mode="font" data-rateit-step="1" style="font-size: 30px"
                              data-rateit-resetable="false"></div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                         <h2>Result 2 from API</h2>
                         <p class="lead" id="result2"></p>
                         <div id="rat2" class="rateit" data-rateit-mode="font" style="font-size: 30px"
-                             data-rateit-resetable="false"></div>
+                             data-rateit-resetable="false" data-rateit-step="1"></div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 col-12 text-center"><img alt="Image" src="{{asset('img/device-2.png')}}">
@@ -161,7 +161,7 @@
                         <p class="lead" id="result3"></p>
                         <hr class="short">
                         <div id="rat3" class="rateit" data-rateit-mode="font" style="font-size: 30px"
-                             data-rateit-resetable="false"></div>
+                             data-rateit-resetable="false" data-rateit-step="1"></div>
                     </div>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                         <p class="lead" id="result4"></p>
                         <hr class="short">
                         <div id="rat4" class="rateit" data-rateit-mode="font" style="font-size: 30px"
-                             data-rateit-resetable="false"></div>
+                             data-rateit-resetable="false" data-rateit-step="1"></div>
                     </div>
                 </div>
             </div>
@@ -228,13 +228,16 @@
                                         var ratingId = data.results[i].ratingId;
                                         $('#result' + (i + 1)).text(result);
                                         $('#secResult' + (i + 1)).removeClass('hidden');
+                                        $('#rat' + (i + 1)).attr('data-rating-id', ratingId);
                                         $('#rat' + (i + 1)).bind('rated', function (event, value) {
-                                            updateRating(ratingId, value);
+                                            var _ratingId = $(this).attr('data-rating-id');
+                                            console.log('ratingId', _ratingId);
+                                            updateRating(_ratingId, value);
                                         });
 
                                     }
 
-                                    $('.rateit').rateit();
+                                    $('.rateit').rateit({max: 5, step: 1});
                                     $('.creditValue').text(data.credit);
                                     window.location.href = '#secResult1';
                                     window.localStorage.setItem('lastQuery', '');

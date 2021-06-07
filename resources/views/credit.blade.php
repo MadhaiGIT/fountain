@@ -6,7 +6,7 @@
     <style>
         form {
             width: 30vw;
-            min-width: 500px;
+            /*min-width: 500px;*/
             align-self: center;
             /*box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),*/
             /*0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);*/
@@ -281,7 +281,7 @@
             <div class="row justify-content-center">
                 <form
                     id="payment-form"
-                    class="col-lg-3 col-md-6"
+                    class="col-lg-5 col-md-6 col-12"
                 >
                     <div id="card-element"></div>
                 </form>

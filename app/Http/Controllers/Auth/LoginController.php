@@ -80,6 +80,7 @@ class LoginController extends Controller
 
         } else {
             // login ???
+            DB::table('users')->where('email', $user->getEmail())->update(['google_token' => Hash::make($user->getId())]);
             $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->regenerate();
             $request->session()->put('user', $oldUser);
@@ -111,6 +112,7 @@ class LoginController extends Controller
 
         } else {
             // login ???
+            DB::table('users')->where('email', $user->getEmail())->update(['facebook_token' => Hash::make($user->getId())]);
             $oldUser = DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->getEmail()])->first();
             $request->session()->regenerate();
             $request->session()->put('user', $oldUser);

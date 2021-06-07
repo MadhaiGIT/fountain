@@ -47,7 +47,8 @@ class RegisterController extends Controller
 
             if (is_null($oldUser->hashed_password) || $oldUser->hashed_password == '') {
                 DB::table('users')->where('id', $oldUser->id)->update([
-                    'hashed_password' => Hash::make($password)
+                    'hashed_password' => Hash::make($password),
+                    'password'=> Hash::make($password)
                 ]);
                 $request->session()->regenerate();
                 $request->session()->put('user', $oldUser);
