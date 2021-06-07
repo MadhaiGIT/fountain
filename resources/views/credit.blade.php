@@ -73,6 +73,7 @@
             transition: all 0.2s ease;
             box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
             width: 100%;
+            margin-top: 0 !important;
         }
 
         button#submit:hover {
