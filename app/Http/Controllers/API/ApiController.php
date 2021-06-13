@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use App\Libraries\Sucurungun\ApiAgent;
 
 
 class ApiController extends BaseController
@@ -54,6 +55,14 @@ class ApiController extends BaseController
                     'Vestibulum volutpat, est eget ullamcorper vestibulum, ipsum erat tristique enim, a lacinia felis ex sed lacus. Proin interdum sapien a laoreet ornare. Suspendisse id massa cursus, sodales mi malesuada, scelerisque neque. Nulla justo nisl, viverra gravida elit vitae, ultrices rutrum erat. Curabitur bibendum tempor diam, ac posuere neque iaculis non. Sed posuere lectus lectus, sed elementum felis condimentum vitae. Integer nec neque a nulla eleifend mattis.',
                     'Praesent vestibulum, ligula venenatis faucibus faucibus, ligula lacus tempus velit, eu volutpat justo dui sit amet mauris. Etiam posuere magna leo, eget suscipit odio efficitur eu. Mauris quis sagittis erat. Praesent eu ipsum venenatis, convallis enim sed, rhoncus risus. Aenean aliquam lacus ac dolor rutrum mattis. In hac habitasse platea dictumst. Nam aliquam nisi nec gravida cursus. Nam nisl ex, feugiat vitae metus vel, dapibus malesuada lorem. Mauris mattis molestie mi, ac auctor felis imperdiet nec. Donec interdum quam a mauris interdum, vitae imperdiet ante cursus. Donec a justo ac nunc fermentum finibus a nec tellus. Donec et molestie lorem.'
                 ];
+
+                // TODO: get result from API, repeat 5 times
+                /*
+                $queryRes = [];
+                for ($i = 0; $i < 5; $i++) {
+                    $queryRes[] = ApiAgent::query($query);
+                }
+                */
 
                 $data = [];
                 foreach ($queryRes as $qr) {
