@@ -69,8 +69,11 @@
                         </div>
                     </div>
                     <form class="row justify-content-center">
-                        <div class="col-md-5"><textarea name="query" id="query" rows="4"
-                                                        placeholder="your query here."></textarea></div>
+                        <div class="col-md-5">
+                            <textarea name="query" id="query" rows="4"
+                                      placeholder="your query here."></textarea>
+                            <span id="queryLength" class="count"></span>
+                        </div>
                         <div class="col-md-5 col-lg-3">
                             <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-50">Send
                             </button>
@@ -127,7 +130,8 @@
                         <h3>Result 1 from API</h3>
                         <p class="lead" id="result1"></p>
                         <hr class="short">
-                        <div id="rat1" class="rateit" data-rateit-mode="font" data-rateit-step="1" style="font-size: 30px"
+                        <div id="rat1" class="rateit" data-rateit-mode="font" data-rateit-step="1"
+                             style="font-size: 30px"
                              data-rateit-resetable="false"></div>
                     </div>
                 </div>
@@ -293,5 +297,13 @@
             }
         });
 
+    </script>
+    <script src="{{asset('js/jquery-characters-calculator.js')}}"></script>
+    <script>
+        $(function () {
+            $('#query').calculate(function (length, limit) {
+                (limit > 0 ? $('#queryLength').html(`<span>${length}</span>/${limit}`) : $('#queryLength').html(`${length}`));
+            }, {limit: 1000})
+        })
     </script>
 @endsection
