@@ -23,7 +23,9 @@ class FountainAdviceQuery extends FountainBase
 
     public static function __UnitTest()
     {
-        $userId = 21;
+
+        $user = FountainUser::create('nickName', "tempFAQ@example.com");
+        $userId = $user->getUserId();
         $adviceSecret = "Test Secret";
         $adviceUserQuery = "Test Query";
         $adviceResponse = "Test Response";
@@ -40,6 +42,7 @@ class FountainAdviceQuery extends FountainBase
         FountainBase::UnitTestCompare("Advice Response", $adviceResponse, $object->getAdviceResponse());
 
         $object->delete();
+        $user->delete();
         FountainBase::UnitTestCompare("Exists After Delete", false, FountainAdviceQuery::exists($id));
 
         return true;
@@ -84,23 +87,23 @@ class FountainAdviceQuery extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $adviceSecret
-     * @param $adviceUserQuery
-     * @param $adviceResponse
+     * @param int $userId
+     * @param string $adviceSecret
+     * @param string $adviceUserQuery
+     * @param string $adviceResponse
      * @return FountainAdviceQuery
      */
-    public static function create($userId, $adviceSecret, $adviceUserQuery, $adviceResponse)
+    public static function create($userId, $adviceSecret, $adviceUserQuery, $adviceResponse): FountainAdviceQuery
     {
         $id = FountainAdviceQuery::__DB__insert($userId, $adviceSecret, $adviceUserQuery, $adviceResponse);
         return new FountainAdviceQuery($id);
     }
 
     /**
-     * @param $userId
-     * @param $adviceSecret
-     * @param $adviceUserQuery
-     * @param $adviceResponse
+     * @param int $userId
+     * @param string $adviceSecret
+     * @param string $adviceUserQuery
+     * @param string $adviceResponse
      * @return int
      */
     private static function __DB__insert($userId, $adviceSecret, $adviceUserQuery, $adviceResponse)
@@ -118,7 +121,7 @@ class FountainAdviceQuery extends FountainBase
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     private static function __DB__select($id)
@@ -136,10 +139,10 @@ class FountainAdviceQuery extends FountainBase
     }
 
     /**
-     * @param $queryId
+     * @param int $queryId
      * @return bool
      */
-    public static function exists($queryId)
+    public static function exists($queryId): bool
     {
         $result = FountainAdviceQuery::__DB__select($queryId, false);
         if (($result === false) || (!is_object($result))) {

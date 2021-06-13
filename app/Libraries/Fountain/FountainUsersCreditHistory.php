@@ -23,9 +23,10 @@ class FountainUsersCreditHistory extends FountainBase
     const CLASS_NAME = __CLASS__;
     const PARENT_CLASS = NULL;
 
-    public static function __UnitTest()
+    public static function __UnitTest(): bool
     {
-        $userId = 21;
+        $user = FountainUser::create('nickNameUCH', 'tempUCH@example.com');
+        $userId = $user->getUserId();
         $actionDateTime = new DateTime('now');
         $actionType = ACTION_TYPES::DEPOSITED;
         $actionValue = 100;
@@ -49,6 +50,7 @@ class FountainUsersCreditHistory extends FountainBase
         }
 
         $usersCreditHistory->delete();
+        $user->delete();
         if (!FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersCreditHistory::exists($id))) {
             return false;
         }
@@ -64,7 +66,7 @@ class FountainUsersCreditHistory extends FountainBase
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return (int)$this->creditId;
     }
@@ -72,7 +74,7 @@ class FountainUsersCreditHistory extends FountainBase
     /**
      * @return string
      */
-    public function getActionType()
+    public function getActionType(): string
     {
         $result = FountainUsersCreditHistory::__DB__select($this->creditId);
         $result = Utils::StdClassToArray($result);
@@ -83,7 +85,7 @@ class FountainUsersCreditHistory extends FountainBase
      * @return DateTime
      * @throws \Exception
      */
-    public function getActionDatetime()
+    public function getActionDatetime(): DateTime
     {
         try {
             $result = FountainUsersCreditHistory::__DB__select($this->creditId);
@@ -97,7 +99,7 @@ class FountainUsersCreditHistory extends FountainBase
     /**
      * @return int
      */
-    public function getActionValue()
+    public function getActionValue(): int
     {
         $result = FountainUsersCreditHistory::__DB__select($this->creditId);
         $result = Utils::StdClassToArray($result);
@@ -105,26 +107,26 @@ class FountainUsersCreditHistory extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $actionDatetime
-     * @param $actionType
-     * @param $actionValue
+     * @param int $userId
+     * @param DateTime $actionDatetime
+     * @param string $actionType
+     * @param string $actionValue
      * @return FountainUsersCreditHistory
      */
-    public static function create($userId, $actionDatetime, $actionType, $actionValue)
+    public static function create($userId, $actionDatetime, $actionType, $actionValue): FountainUsersCreditHistory
     {
         $id = FountainUsersCreditHistory::__DB__insert($userId, $actionDatetime, $actionType, $actionValue);
         return new FountainUsersCreditHistory($id);
     }
 
     /**
-     * @param $userId
-     * @param $actionDatetime
-     * @param $actionType
-     * @param $actionValue
+     * @param int $userId
+     * @param DateTime $actionDatetime
+     * @param string $actionType
+     * @param string $actionValue
      * @return int
      */
-    private static function __DB__insert($userId, $actionDatetime, $actionType, $actionValue)
+    private static function __DB__insert($userId, $actionDatetime, $actionType, $actionValue): int
     {
         $id = DB::table('users_credit_history')->insertGetId(
             array(
@@ -139,7 +141,7 @@ class FountainUsersCreditHistory extends FountainBase
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     private static function __DB__select($id)
@@ -157,10 +159,10 @@ class FountainUsersCreditHistory extends FountainBase
     }
 
     /**
-     * @param $creditId
+     * @param int $creditId
      * @return bool
      */
-    public static function exists($creditId)
+    public static function exists($creditId): bool
     {
         $result = FountainUsersCreditHistory::__DB__select($creditId);
         if (!is_object($result)) {

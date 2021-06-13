@@ -24,7 +24,8 @@ class FountainUsersFinance extends FountainBase
 
     public static function __UnitTest(): bool
     {
-        $userId = 21;
+        $user = FountainUser::create('nickNameUF', 'tempUF@example.com');
+        $userId = $user->getUserId();
         $financeDatetime = new DateTime('now');
         $financeAmount = 100.0;
         $currency = "USD";
@@ -40,6 +41,7 @@ class FountainUsersFinance extends FountainBase
         FountainBase::UnitTestCompare("Finance Amount", $financeAmount, $object->getFinanceAmount());
 
         $object->delete();
+        $user->delete();
         FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersFinance::exists($id));
 
         return true;
@@ -48,7 +50,7 @@ class FountainUsersFinance extends FountainBase
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return (int)$this->financeId;
     }
@@ -88,10 +90,10 @@ class FountainUsersFinance extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $financeDatetime
-     * @param $financeAmount
-     * @param $currency
+     * @param int $userId
+     * @param DateTime $financeDatetime
+     * @param double $financeAmount
+     * @param string $currency
      * @return FountainUsersFinance
      */
     public static function create($userId, $financeDatetime, $financeAmount, $currency): FountainUsersFinance
@@ -101,10 +103,10 @@ class FountainUsersFinance extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $financeDatetime
-     * @param $financeAmount
-     * @param $currency
+     * @param int $userId
+     * @param DateTime $financeDatetime
+     * @param double $financeAmount
+     * @param string $currency
      * @return int
      */
     private static function __DB__insert($userId, $financeDatetime, $financeAmount, $currency): int
@@ -122,7 +124,7 @@ class FountainUsersFinance extends FountainBase
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     private static function __DB__select($id)
@@ -140,7 +142,7 @@ class FountainUsersFinance extends FountainBase
     }
 
     /**
-     * @param $financeId
+     * @param int $financeId
      * @return bool
      */
     public static function exists($financeId): bool

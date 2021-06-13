@@ -30,7 +30,8 @@ class FountainUsersRating extends FountainBase
 
     public static function __UnitTest()
     {
-        $userId = 21;
+        $user = FountainUser::create('nickNameUR', 'testUR@example.com');
+        $userId = $user->getUserId();
         $queryId = 31;
         $ratingDatetime = new DateTime('now');
         $ratingValue = 5;
@@ -48,6 +49,7 @@ class FountainUsersRating extends FountainBase
         FountainBase::UnitTestCompare("Rating Comment", $ratingComment, $object->getRatingComment());
 
         $object->delete();
+        $user->delete();
         FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersRating::exists($id));
 
         return true;
@@ -57,7 +59,7 @@ class FountainUsersRating extends FountainBase
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return (int)$this->ratingId;
     }
@@ -65,7 +67,7 @@ class FountainUsersRating extends FountainBase
     /**
      * @return string
      */
-    public function getRatingComment()
+    public function getRatingComment(): string
     {
         $result = FountainUsersRating::__DB__select($this->ratingId);
         $result = Utils::StdClassToArray($result);
@@ -75,7 +77,7 @@ class FountainUsersRating extends FountainBase
     /**
      * @return DateTime
      */
-    public function getRatingDatetime()
+    public function getRatingDatetime(): DateTime
     {
         try {
             $result = FountainUsersRating::__DB__select($this->ratingId);
@@ -89,7 +91,7 @@ class FountainUsersRating extends FountainBase
     /**
      * @return int
      */
-    public function getRatingValue()
+    public function getRatingValue(): int
     {
         $result = FountainUsersRating::__DB__select($this->ratingId);
         $result = Utils::StdClassToArray($result);
@@ -97,28 +99,28 @@ class FountainUsersRating extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $queryId
-     * @param $ratingDatetime
-     * @param $ratingValue
-     * @param $ratingComment
+     * @param int $userId
+     * @param int $queryId
+     * @param DateTime $ratingDatetime
+     * @param int $ratingValue
+     * @param string $ratingComment
      * @return FountainUsersRating
      */
-    public static function create($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment)
+    public static function create($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment): FountainUsersRating
     {
         $id = FountainUsersRating::__DB__insert($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment);
         return new FountainUsersRating($id);
     }
 
     /**
-     * @param $userId
-     * @param $queryId
-     * @param $ratingDatetime
-     * @param $ratingValue
-     * @param $ratingComment
+     * @param int $userId
+     * @param int $queryId
+     * @param DateTime $ratingDatetime
+     * @param int $ratingValue
+     * @param string $ratingComment
      * @return int
      */
-    private static function __DB__insert($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment)
+    private static function __DB__insert($userId, $queryId, $ratingDatetime, $ratingValue, $ratingComment): int
     {
         $_id = DB::table('users_rating')->insertGetId(
             array(
@@ -134,7 +136,7 @@ class FountainUsersRating extends FountainBase
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     private static function __DB__select($id)
@@ -152,10 +154,10 @@ class FountainUsersRating extends FountainBase
     }
 
     /**
-     * @param $ratingId
+     * @param int $ratingId
      * @return bool
      */
-    public static function exists($ratingId)
+    public static function exists($ratingId): bool
     {
         $result = FountainUsersRating::__DB__select($ratingId);
         if (($result === false) || (!is_object($result))) {

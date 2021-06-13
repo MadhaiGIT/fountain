@@ -3,6 +3,7 @@
 namespace App\Libraries\Fountain;
 
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class FountainUser extends FountainBase
 {
@@ -28,13 +29,15 @@ class FountainUser extends FountainBase
      * @unit-test: unnecessary
      * @return: bool
      */
-    public static function __UnitTest()
+    public static function __UnitTest(): bool
     {
         $nickname1 = "Johe Doe";
         $nickname2 = "Jane Doe";
 
-        $email1 = "email1@gmail.com";
-        $email2 = "email2@gmail.com";
+        $now = new DateTime('now');
+
+        $email1 = "email1-" . $now->getTimestamp() . "@gmail.com";
+        $email2 = "email2-" . $now->getTimestamp() . "@gmail.com";
 
         $facebookToken1 = "fb-token-1";
         $facebookToken2 = "fb-token-2";
@@ -95,7 +98,7 @@ class FountainUser extends FountainBase
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -104,7 +107,7 @@ class FountainUser extends FountainBase
      * Get Nick Name
      * @return string
      */
-    public function getNickName()
+    public function getNickName(): string
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -115,7 +118,7 @@ class FountainUser extends FountainBase
      * Get Facebook Token
      * @return string
      */
-    public function getFacebookToken()
+    public function getFacebookToken(): string
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -126,7 +129,7 @@ class FountainUser extends FountainBase
      * Get Google Token
      * @return string
      */
-    public function getGoogleToken()
+    public function getGoogleToken(): string
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -137,7 +140,7 @@ class FountainUser extends FountainBase
      * Get Email
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -148,7 +151,7 @@ class FountainUser extends FountainBase
      * Get Credit
      * @return int
      */
-    public function getCredit()
+    public function getCredit(): int
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -158,7 +161,7 @@ class FountainUser extends FountainBase
     /**
      * @return bool
      */
-    public function getAccountEnabled()
+    public function getAccountEnabled(): bool
     {
         $result = FountainUser::__DB__select__user($this->userId);
         $result = Utils::StdClassToArray($result);
@@ -167,13 +170,13 @@ class FountainUser extends FountainBase
 
     /**
      * Create new FountainUser
-     * @param $nickname
-     * @param $email
-     * @param $facebookToken
-     * @param $googleToken
-     * @param $accountEnabled
-     * @param $credit
-     * @param $hashedPassword
+     * @param string $nickname
+     * @param string $email
+     * @param string $facebookToken
+     * @param string $googleToken
+     * @param string $accountEnabled
+     * @param int $credit
+     * @param string $hashedPassword
      * @return FountainUser
      */
     public static function create(
@@ -184,7 +187,7 @@ class FountainUser extends FountainBase
         $facebookToken = '',
         $googleToken = '',
         $credit = 0
-    )
+    ): FountainUser
     {
         $id = FountainUser::__DB__insert__user(
             $nickname, $email, $facebookToken, $googleToken, $accountEnabled, $credit, $hashedPassword
@@ -211,7 +214,7 @@ class FountainUser extends FountainBase
      */
     private static function __DB__insert__user(
         $nickname, $email, $facebookToken, $googleToken, $accountEnabled, $credit, $hashedPassword,
-        $signUpUrl = '', $signUpRefererUrl = '', $signUpDevice = '', $signUpIp = '')
+        $signUpUrl = '', $signUpRefererUrl = '', $signUpDevice = '', $signUpIp = ''): int
     {
         $id = DB::table('users')->insertGetId(array(
             'nickname' => $nickname,
@@ -232,8 +235,8 @@ class FountainUser extends FountainBase
 
     /**
      * Get all data of record from table user give id
-     * @param $value
-     * @return FountainUser
+     * @param int $value
+     * @return mixed
      */
     private static function __DB__select__user($value)
     {
@@ -251,10 +254,10 @@ class FountainUser extends FountainBase
 
     /**
      * Check if object with id exists
-     * @param $userId
+     * @param int $userId
      * @return bool
      */
-    public static function exists($userId)
+    public static function exists($userId): bool
     {
         $result = FountainUser::__DB__select__user($userId);
         if (!is_object($result)) {
@@ -266,10 +269,10 @@ class FountainUser extends FountainBase
 
     /**
      * Check if object with id exists
-     * @param $email
+     * @param string $email
      * @return bool
      */
-    public static function emailExists($email)
+    public static function emailExists($email): bool
     {
         $result = DB::table('users')->select('*')->where('email', '=', $email)->first();
         if (!is_object($result)) {

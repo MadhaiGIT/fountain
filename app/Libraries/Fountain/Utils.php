@@ -10,7 +10,8 @@ class Utils
         echo $msg;
     }
 
-    public static function StdClassToArray($stdClass) {
+    public static function StdClassToArray($stdClass): array
+    {
         return (array)json_decode(json_encode($stdClass));
     }
 }

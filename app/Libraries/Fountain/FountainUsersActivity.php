@@ -38,9 +38,10 @@ class FountainUsersActivity extends FountainBase
         $this->activityId = $id;
     }
 
-    public static function __UnitTest()
+    public static function __UnitTest(): bool
     {
-        $userId = 21;
+        $user = FountainUser::create('nickNameUA', 'tempUA@example.com');
+        $userId = $user->getUserId();
         $eventDateTime = new DateTime('now');
         $eventType = EVENT_TYPES::LOGIN;
 
@@ -63,6 +64,7 @@ class FountainUsersActivity extends FountainBase
         }
 
         $usersActivity->delete();
+        $user->delete();
         if (!FountainBase::UnitTestCompare("Exists After Delete", false, FountainUsersActivity::exists($id))) {
             return false;
         }
@@ -73,7 +75,7 @@ class FountainUsersActivity extends FountainBase
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return (int)$this->activityId;
     }
@@ -81,7 +83,7 @@ class FountainUsersActivity extends FountainBase
     /**
      * @return string
      */
-    public function getEventType()
+    public function getEventType(): string
     {
         $result = FountainUsersActivity::__DB__select($this->activityId);
         $result = Utils::StdClassToArray($result);
@@ -91,7 +93,7 @@ class FountainUsersActivity extends FountainBase
     /**
      * @return DateTime
      */
-    public function getEventDatetime()
+    public function getEventDatetime(): DateTime
     {
         try {
             $result = FountainUsersActivity::__DB__select($this->activityId);
@@ -103,12 +105,12 @@ class FountainUsersActivity extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $eventDatetime
-     * @param $eventType
+     * @param int $userId
+     * @param DateTime $eventDatetime
+     * @param string $eventType
      * @return FountainUsersActivity
      */
-    public static function create($userId, $eventDatetime, $eventType)
+    public static function create($userId, $eventDatetime, $eventType): FountainUsersActivity
     {
         $_id = FountainUsersActivity::__DB__insert(
             $userId,
@@ -120,12 +122,12 @@ class FountainUsersActivity extends FountainBase
     }
 
     /**
-     * @param $userId
-     * @param $eventDatetime
-     * @param $eventType
+     * @param int $userId
+     * @param DateTime $eventDatetime
+     * @param string $eventType
      * @return int
      */
-    private static function __DB__insert($userId, $eventDatetime, $eventType)
+    private static function __DB__insert($userId, $eventDatetime, $eventType): int
     {
         $id = DB::table('users_activity')->insertGetId(
             array(
@@ -139,7 +141,7 @@ class FountainUsersActivity extends FountainBase
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     private static function __DB__select($id)
@@ -157,7 +159,7 @@ class FountainUsersActivity extends FountainBase
     }
 
     /**
-     * @param $activityId
+     * @param int $activityId
      * @return bool
      */
     public static function exists($activityId): bool
