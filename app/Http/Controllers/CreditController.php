@@ -20,7 +20,7 @@ class CreditController
 //        return env('STRIPE_TEST_KEY');
         \Stripe\Stripe::setApiKey(env('STRIPE_TEST_SECRET'));
 
-        $option = $request->get('option', 1);
+        $option = $request->get('option', 2);
 
         $amount = 1;
         $queryCount = 1;
@@ -63,6 +63,20 @@ class CreditController
         $pStatus = $request->get('status');
         $user = $request->session()->get('user');
 
+        $token = 10;
+        if ($pAmount == 100) {
+            $token = 1;
+        }
+        else if ($pAmount == 900) {
+            $token = 10;
+        }
+        else if ($pAmount == 40000) {
+            $token = 50;
+        }
+        else if ($pAmount == 75000) {
+            $token = 100;
+        }
+
         if ($pId == $request->session()->get('payment_intent')->id && $pStatus == 'succeeded') {
             $datetime = new DateTime('now');
             FountainUsersActivity::create($user->id, $datetime, EVENT_TYPES::CREDIT_ADDED);
@@ -70,7 +84,7 @@ class CreditController
             FountainUsersFinance::create($user->id, $datetime, $pAmount / 100, $pCurrency);
 
             DB::table('users')->where('id', $user->id)->update([
-                'credit' => floatval($user->credit) + $pAmount / 100
+                'credit' => floatval($user->credit) + $token
             ]);
             $user = DB::table('users')->select(['*'])->where('id', $user->id)->first();
             $request->session()->put('user', $user);
