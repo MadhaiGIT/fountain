@@ -73,9 +73,9 @@ class CreditController
             $token = 1;
         } else if ($pAmount == 900) {
             $token = 10;
-        } else if ($pAmount == 40000) {
+        } else if ($pAmount == 4000) {
             $token = 50;
-        } else if ($pAmount == 75000) {
+        } else if ($pAmount == 7500) {
             $token = 100;
         }
 
