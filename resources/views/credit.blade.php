@@ -440,7 +440,10 @@
         }
 
         $(function () {
-            window.location.href += '#secCard';
+            // window.location.href = window.location.href.split('#')[0] + '#secCard';
+            setTimeout(function () {
+                card.focus();
+            }, 1000);
         })
     </script>
 @endsection
