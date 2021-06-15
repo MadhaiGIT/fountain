@@ -18,6 +18,11 @@ class CreditController
     function credit(Request $request)
     {
 //        return env('STRIPE_TEST_KEY');
+        $user = $request->session()->get('user');
+        if (!$user->disclaimer_accepted) {
+            return redirect('/disclaimer?redirect=' . $request->url());
+        }
+
         \Stripe\Stripe::setApiKey(env('STRIPE_TEST_SECRET'));
 
         $option = $request->get('option', 2);
@@ -66,14 +71,11 @@ class CreditController
         $token = 10;
         if ($pAmount == 100) {
             $token = 1;
-        }
-        else if ($pAmount == 900) {
+        } else if ($pAmount == 900) {
             $token = 10;
-        }
-        else if ($pAmount == 40000) {
+        } else if ($pAmount == 40000) {
             $token = 50;
-        }
-        else if ($pAmount == 75000) {
+        } else if ($pAmount == 75000) {
             $token = 100;
         }
 

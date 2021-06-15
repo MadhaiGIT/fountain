@@ -274,7 +274,7 @@
             </div>
         </div>
     </section>
-    <section class="text-center imagebg" data-gradient-bg="#4876BD,#5448BD,#8F48BD,#BD48B1">
+    <section class="text-center imagebg" data-gradient-bg="#4876BD,#5448BD,#8F48BD,#BD48B1" id="secCard">
         <div class="container">
             <div class="row justify-content-center">
                 <h2>Pay ${{$amount}} to buy {{$queryCount}} queries</h2>
@@ -317,7 +317,6 @@
 @section('scripts')
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-
         function payWithCard(stripe, card, clientSecret) {
             console.log('payWithCard');
             loading(true);
@@ -439,5 +438,9 @@
             console.log('buyNow', stripe, card);
             payWithCard(stripe, card, '{{$intent->client_secret}}');
         }
+
+        $(function () {
+            window.location.href += '#secCard';
+        })
     </script>
 @endsection

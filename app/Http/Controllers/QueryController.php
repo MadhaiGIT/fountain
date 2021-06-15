@@ -12,6 +12,11 @@ class QueryController
     function query(Request $request)
     {
         $user = $request->session()->get('user');
+
+        if (!$user->disclaimer_accepted) {
+            return redirect('/disclaimer?redirect=' . $request->url());
+        }
+
         if ($user->credit <= 0) {
             return redirect('credit');
         }

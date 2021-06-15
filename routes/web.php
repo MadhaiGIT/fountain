@@ -18,6 +18,11 @@ Route::prefix('query')->middleware('auth')->group(function() {
 
 });
 
+Route::prefix('disclaimer')->middleware('auth')->group(function(){
+    Route::get('/', [HomeController::class, 'disclaimer']);
+    Route::post('/', [HomeController::class, 'acceptDisclaimer']);
+});
+
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('web');

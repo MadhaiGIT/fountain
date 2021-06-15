@@ -27,7 +27,9 @@ class Authenticate extends Middleware
 
         $user = $request->session()->get('user');
         if ($user != null) {
-            $request->session()->put('user', DB::table('users')->select(['id', 'email', 'nickname', 'credit', 'account_enabled'])->where(['email' => $user->email])->first());
+            $user = DB::table('users')->select(['*'])->where(['email' => $user->email])->first();
+
+            $request->session()->put('user', $user);
             return $next($request);
         }
 

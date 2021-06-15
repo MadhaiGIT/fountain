@@ -68,7 +68,7 @@
                             <h4 id="credit">Available Credits: <span class="creditValue">{{$data->credit}}</span></h4>
                         </div>
                     </div>
-                    <form class="row justify-content-center">
+                    <form class="row justify-content-center" id="formQuery">
                         <div class="col-md-5">
                             <textarea name="query" id="query" rows="4"
                                       placeholder="your query here."></textarea>
@@ -79,7 +79,13 @@
                             </button>
                         </div>
                     </form>
+                    <div class="row justify-content-center mt-5 hidden" id="divQueryStatic">
+                        <div class="col">
+                            <h5 id="credit">Query: <span id="queryStatic"></span></h5>
+                        </div>
+                    </div>
                     <div class="row justify-content-center m-0">
+                        <div id="queryStatic" class="hidden"></div>
                         <div class="col"><span class="type--fine-print"><br></span></div>
                     </div>
                 </div>
@@ -188,11 +194,45 @@
             </div>
         </div>
     </section>
+    <section class="switchable imagebg switchable--switch hidden" data-overlay="5" id="secResult5">
+        <div class="background-image-holder"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>
+        <div class="container">
+            <div class="row justify-content-around">
+                <div class="col-md-7"><img alt="Image" src="{{asset('img/device-2.png')}}"></div>
+                <div class="col-md-5 col-lg-4">
+                    <div class="switchable__text">
+                        <h3>Result 5 from API</h3>
+                        <p class="lead" id="result5"></p>
+                        <hr class="short">
+                        <div id="rat5" class="rateit" data-rateit-mode="font" style="font-size: 30px"
+                             data-rateit-resetable="false" data-rateit-step="1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="switchable imagebg switchable--switch hidden" data-overlay="6" id="secEnd">
+        <div class="background-image-holder"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>
+        <div class="container">
+            <div class="row justify-content-around">
+                <div class="col-md-5 col-lg-4">
+                    <button type="button" id="btnReset" class="btn btn--primary type--uppercase w-75"
+                            onclick="reload()">Submit a new question
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
 @endsection
 
 @section('scripts')
     <script src="{{asset('libs/rateit/jquery.rateit.js')}}"></script>
     <script>
+        function addRatingComment(ratingId, value) {
+
+        }
+
         function updateRating(ratingId, value) {
             console.log('update-rating', ratingId, value)
             $.ajax({
@@ -205,6 +245,12 @@
                 },
                 success: function (res) {
                     console.log(res);
+                    if (value <= 2) {
+                        // TODO: "Your opinion is very important for us. Please let us know how we can do better"
+                        var html = "";
+
+                        // TODO: Button for Submit
+                    }
                 }
             })
         }
@@ -247,7 +293,14 @@
                                     window.localStorage.setItem('lastQuery', '');
                                 }
                                 // $('#query').text('');
-                                $('#secDisclaimer').addClass('hidden')
+                                $('#secDisclaimer').addClass('hidden');
+                                $('#query').addClass('hidden');
+
+                                // show
+                                $('#queryStatic').html(query);
+                                $('#divQueryStatic').removeClass('hidden');
+                                $('#formQuery').hide();
+                                $('#secEnd').removeClass('hidden');
                             } else {
                                 if (data.type === 'credit_insufficient') {
                                     window.localStorage.setItem('lastQuery', query);
@@ -276,11 +329,16 @@
             window.scrollTo(0, document.body.scrollHeight)
         }
 
+        function reload() {
+            window.location.reload();
+        }
+
         $(document).ready(function () {
             $('#btnQuery').click(function () {
                 var query = $('#query').val();
                 if (query.trim().length) {
-                    showDisclaimer();
+                    // showDisclaimer();
+                    submitQuery();
                 } else {
                     $('#description').html('Please type your query first.');
                     $('#query').focus();
