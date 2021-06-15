@@ -69,13 +69,15 @@
                         </div>
                     </div>
                     <form class="row justify-content-center" id="formQuery">
-                        <div class="col-md-5">
+                        <div class="col-md-12">
                             <textarea name="query" id="query" rows="4"
                                       placeholder="your query here."></textarea>
                             <span id="queryLength" class="count"></span>
                         </div>
-                        <div class="col-md-5 col-lg-3">
-                            <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-50">Send
+                    </form>
+                    <form class="row justify-content-center" id="formQuery">
+                        <div class="col-md-6` col-lg-3">
+                            <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-100">Send
                             </button>
                         </div>
                     </form>
