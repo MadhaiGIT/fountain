@@ -38,8 +38,8 @@
                     <form action="/signup" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-12"><input type="text" name="nickname"
-                                                       placeholder="Nickname" required></div>
+{{--                            <div class="col-12"><input type="text" name="nickname"--}}
+{{--                                                       placeholder="Nickname" required></div>--}}
                             <div class="col-12"><input type="email" name="email"
                                                        placeholder="Email Address" required></div>
                             <div class="col-12"><input type="password" name="password" placeholder="Password"

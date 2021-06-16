@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
     function register(Request $request)
     {
-        $nickname = $request->input('nickname');
+        $nickname = '';// $request->input('nickname');
         $email = $request->input('email');
         $password = $request->input('password');
         $time = new DateTime('now');
