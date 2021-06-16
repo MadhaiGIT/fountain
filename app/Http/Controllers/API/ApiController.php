@@ -93,7 +93,7 @@ class ApiController extends BaseController
         return json_encode($result);
     }
 
-    function updateRating(Request $request)
+    function addRating(Request $request)
     {
         $ratingId = $request->get('ratingId');
         $userId = $request->get('userId');
@@ -104,6 +104,25 @@ class ApiController extends BaseController
         try {
 //            FountainUsersActivity::create($userId, $time, EVENT_TYPES::ASK_ADVICE)
             DB::table('users_rating')->where('rating_id', $ratingId)->update(['rating_value' => $value, 'rating_datetime' => $time]);
+            $result['success'] = true;
+        } catch (\Exception $e) {
+            $result['exception'] = $e->getMessage();
+            $result['type'] = 'exception';
+        }
+        return json_encode($result);
+    }
+
+    function updateRatingComment(Request $request)
+    {
+        $ratingId = $request->get('ratingId');
+        $userId = $request->get('userId');
+        $value = $request->get('value');
+        $result = ['ratingId' => $ratingId, 'value' => $value, 'success' => false];
+        $time = new DateTime('now');
+
+        try {
+//            FountainUsersActivity::create($userId, $time, EVENT_TYPES::ASK_ADVICE)
+            DB::table('users_rating')->where('rating_id', $ratingId)->update(['rating_comment' => $value]);
             $result['success'] = true;
         } catch (\Exception $e) {
             $result['exception'] = $e->getMessage();

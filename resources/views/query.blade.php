@@ -68,15 +68,15 @@
                             <h4 id="credit">Available Credits: <span class="creditValue">{{$data->credit}}</span></h4>
                         </div>
                     </div>
-                    <form class="row justify-content-center" id="formQuery">
+                    <form class="row justify-content-center formQuery">
                         <div class="col-md-12">
                             <textarea name="query" id="query" rows="4"
                                       placeholder="your query here."></textarea>
                             <span id="queryLength" class="count"></span>
                         </div>
                     </form>
-                    <form class="row justify-content-center" id="formQuery">
-                        <div class="col-md-6` col-lg-3">
+                    <form class="row justify-content-center formQuery">
+                        <div class="col-md-6 col-lg-3">
                             <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-100">Send
                             </button>
                         </div>
@@ -128,7 +128,7 @@
             </div>
         </div>
     </section>
-    <section class="switchable imagebg hidden" data-overlay="4" id="secResult1">
+    <section class="switchable imagebg " data-overlay="4" id="secResult1">
         <div class="background-image-holder"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>
         <div class="container">
             <div class="row justify-content-around">
@@ -141,6 +141,7 @@
                         <div id="rat1" class="rateit" data-rateit-mode="font" data-rateit-step="1"
                              style="font-size: 30px"
                              data-rateit-resetable="false"></div>
+                        <div id="feedbackContainer1" class=""></div>
                     </div>
                 </div>
             </div>
@@ -155,6 +156,7 @@
                         <p class="lead" id="result2"></p>
                         <div id="rat2" class="rateit" data-rateit-mode="font" style="font-size: 30px"
                              data-rateit-resetable="false" data-rateit-step="1"></div>
+                        <div id="feedbackContainer2" class=""></div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 col-12 text-center"><img alt="Image" src="{{asset('img/device-2.png')}}">
@@ -174,6 +176,7 @@
                         <hr class="short">
                         <div id="rat3" class="rateit" data-rateit-mode="font" style="font-size: 30px"
                              data-rateit-resetable="false" data-rateit-step="1"></div>
+                        <div id="feedbackContainer3" class=""></div>
                     </div>
                 </div>
             </div>
@@ -191,6 +194,7 @@
                         <hr class="short">
                         <div id="rat4" class="rateit" data-rateit-mode="font" style="font-size: 30px"
                              data-rateit-resetable="false" data-rateit-step="1"></div>
+                        <div id="feedbackContainer4" class=""></div>
                     </div>
                 </div>
             </div>
@@ -208,6 +212,7 @@
                         <hr class="short">
                         <div id="rat5" class="rateit" data-rateit-mode="font" style="font-size: 30px"
                              data-rateit-resetable="false" data-rateit-step="1"></div>
+                        <div id="feedbackContainer5" class=""></div>
                     </div>
                 </div>
             </div>
@@ -231,14 +236,32 @@
 @section('scripts')
     <script src="{{asset('libs/rateit/jquery.rateit.js')}}"></script>
     <script>
-        function addRatingComment(ratingId, value) {
-
-        }
-
-        function updateRating(ratingId, value) {
-            console.log('update-rating', ratingId, value)
+        function addRatingComment(ratingId, divId) {
+            console.log('add-rating-comment', ratingId, divId);
+            var value = $('textarea#feedback' + divId).val();
+            if (!value) {
+                $('textarea#feedback' + divId).focus();
+                return;
+            }
             $.ajax({
                 method: 'post',
+                url: '/api/query/rating',
+                data: {
+                    ratingId: ratingId,
+                    value: value,
+                    userId: '{{$data->id}}'
+                },
+                success: function (res) {
+                    console.log('res', res);
+                    $('#feedbackContainer' + divId).html('<h5>Thanks for your feedback</h5>');
+                }
+            })
+        }
+
+        function updateRating(ratingId, value, divIndex) {
+            console.log('update-rating', ratingId, value, divIndex)
+            $.ajax({
+                method: 'put',
                 url: '/api/query/rating',
                 data: {
                     ratingId: ratingId,
@@ -249,9 +272,16 @@
                     console.log(res);
                     if (value <= 2) {
                         // TODO: "Your opinion is very important for us. Please let us know how we can do better"
-                        var html = "";
-
+                        var html = '<hr class="short">' +
+                            '<h5 class="col-md-12">' +
+                            'Your option is very important for us. Please let us know how we can do better.' +
+                            '</h5>' +
+                            '<textarea id="feedback' + divIndex + '" class="col-md-12" cols="3" placeholder=""></textarea><br>' +
+                            '<button type="button" class="btn btn--primary type--uppercase col-md-12" id="btnFeedback' + divIndex + '" ' +
+                            'onclick="addRatingComment(' + ratingId + ', ' + divIndex + ')">Submit</button>';
+                        $('#feedbackContainer' + divIndex).html(html);
                         // TODO: Button for Submit
+
                     }
                 }
             })
@@ -280,11 +310,11 @@
                                         var ratingId = data.results[i].ratingId;
                                         $('#result' + (i + 1)).text(result);
                                         $('#secResult' + (i + 1)).removeClass('hidden');
-                                        $('#rat' + (i + 1)).attr('data-rating-id', ratingId);
-                                        $('#rat' + (i + 1)).bind('rated', function (event, value) {
+                                        $('#rat' + (i + 1)).attr('data-rating-id', ratingId).attr('data-div-id', i + 1).bind('rated', function (event, value) {
                                             var _ratingId = $(this).attr('data-rating-id');
-                                            console.log('ratingId', _ratingId);
-                                            updateRating(_ratingId, value);
+                                            var _divId = $(this).attr('data-div-id');
+                                            // console.log('ratingId', _ratingId);
+                                            updateRating(_ratingId, value, _divId);
                                         });
 
                                     }
@@ -301,7 +331,7 @@
                                 // show
                                 $('#queryStatic').html(query);
                                 $('#divQueryStatic').removeClass('hidden');
-                                $('#formQuery').hide();
+                                $('.formQuery').hide();
                                 $('#secEnd').removeClass('hidden');
                             } else {
                                 if (data.type === 'credit_insufficient') {

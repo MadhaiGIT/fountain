@@ -21,7 +21,8 @@ Route::prefix('test')->group(function () {
 
 Route::prefix('query')->group(function() {
     Route::post('/', [ApiController::class, 'queryResult']);
-    Route::post('/rating', [ApiController::class, 'updateRating']);
+    Route::put('/rating', [ApiController::class, 'addRating']);
+    Route::post('/rating', [ApiController::class, 'updateRatingComment']);
 });
 
 Route::post('/chargeStatus', [ApiController::class, 'chargeStatus']);
