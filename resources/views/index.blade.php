@@ -51,7 +51,7 @@
     <body data-smooth-scroll-offset="77">
         <div class="nav-container"> </div>
         <div class="main-container">
-            <section class="imagebg videobg text-center parallax height-90" data-overlay="2"> <video autoplay="" loop="" muted="">
+            <section class="imagebg videobg text-center parallax height-100" data-overlay="2"> <video autoplay="" loop="" muted="">
 		<source src="video/video.webm" type="video/webm">
 		<source src="video/video.mp4" type="video/mp4">
 		<source src="video/video.ogv" type="video/ogv">

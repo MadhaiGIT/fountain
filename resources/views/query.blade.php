@@ -68,14 +68,14 @@
                             <h4 id="credit">Available Credits: <span class="creditValue">{{$data->credit}}</span></h4>
                         </div>
                     </div>
-                    <form class="row justify-content-center formQuery">
+                    <form class="row justify-content-center formQuery" style="margin: 0">
                         <div class="col-md-12">
                             <textarea name="query" id="query" rows="4"
                                       placeholder="your query here."></textarea>
                             <span id="queryLength" class="count"></span>
                         </div>
                     </form>
-                    <form class="row justify-content-center formQuery">
+                    <form class="row justify-content-center formQuery" style="margin: 0">
                         <div class="col-md-6 col-lg-3">
                             <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-100">Send
                             </button>
@@ -128,7 +128,7 @@
             </div>
         </div>
     </section>
-    <section class="switchable imagebg " data-overlay="4" id="secResult1">
+    <section class="switchable imagebg hidden" data-overlay="4" id="secResult1">
         <div class="background-image-holder"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>
         <div class="container">
             <div class="row justify-content-around">
