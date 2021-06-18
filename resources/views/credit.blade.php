@@ -214,8 +214,8 @@
 @endsection
 
 @section('content')
-    <section class="pricing-section-2 text-center imagebg section--ken-burns" data-overlay="4">
-        <div class="background-image-holder"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>
+    <section class="pricing-section-2 text-center imagebg section--ken-burns" data-overlay="4" style="background: url('{{asset('img/hero-1.jpg')}}')">
+{{--        <div class="background-image-holder" style="-webkit-animation: none; -webkit-transition: none;"><img alt="background" src="{{asset('img/hero-1.jpg')}}"></div>--}}
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
@@ -428,6 +428,9 @@
 
             }
         });
+        card.on("ready", function () {
+            card.focus();
+        })
         // var form = document.getElementById("payment-form");
         // form.addEventListener("submit", function (event) {
         //     event.preventDefault();
@@ -441,9 +444,12 @@
 
         $(function () {
             // window.location.href = window.location.href.split('#')[0] + '#secCard';
-            setTimeout(function () {
-                card.focus();
-            }, 1000);
+            $('html, body').animate({
+                scrollTop: $('#secCard').offset().top
+            }, 500);
+            // setTimeout(function () {
+            //     card.focus();
+            // }, 3000);
         })
     </script>
 @endsection
