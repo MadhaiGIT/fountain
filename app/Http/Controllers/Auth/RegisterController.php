@@ -31,7 +31,7 @@ class RegisterController extends Controller
         $request->validate([
             'email' => 'required',
             'password' => 'required',
-            'nickname' => 'required'
+//            'nickname' => 'required'
         ]);
 
         if (!FountainUser::emailExists($email)) {
