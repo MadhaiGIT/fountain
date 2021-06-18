@@ -75,6 +75,7 @@
                             <span id="queryLength" class="count"></span>
                         </div>
                     </form>
+                    <br>
                     <form class="row justify-content-center formQuery" style="margin: 0">
                         <div class="col-md-6 col-lg-3">
                             <button type="button" id="btnQuery" class="btn btn--primary type--uppercase w-100">Send
