@@ -254,6 +254,7 @@
                 success: function (res) {
                     console.log('res', res);
                     $('#feedbackContainer' + divId).html('<h5>Thanks for your feedback</h5>');
+                    $('#rat' + divId).rateit('readonly', true);
                 }
             })
         }
@@ -280,8 +281,8 @@
                             '<button type="button" class="btn btn--primary type--uppercase col-md-12" id="btnFeedback' + divIndex + '" ' +
                             'onclick="addRatingComment(' + ratingId + ', ' + divIndex + ')">Submit</button>';
                         $('#feedbackContainer' + divIndex).html(html);
-                        // TODO: Button for Submit
-
+                    } else {
+                        $('#feedbackContainer' + divIndex).html('');
                     }
                 }
             })
